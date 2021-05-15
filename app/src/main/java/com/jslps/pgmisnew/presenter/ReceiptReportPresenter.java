@@ -1,12 +1,14 @@
 package com.jslps.pgmisnew.presenter;
 
 import com.jslps.pgmisnew.database.Itempurchasedbypgtbl;
-import com.jslps.pgmisnew.database.PgCapitalSavetbl;
-import com.jslps.pgmisnew.database.PgMemShipFeeSavetbl;
+import com.jslps.pgmisnew.database.Pgcapitalsavetbl;
+import com.jslps.pgmisnew.database.Pgmemshipfeesavetbl;
 import com.jslps.pgmisnew.database.PgPaymentTranstbl;
 import com.jslps.pgmisnew.database.PgReceiptDisData;
 import com.jslps.pgmisnew.database.PgReceiptTranstbl;
+import com.jslps.pgmisnew.database.PgmisBatchLoantbl;
 import com.jslps.pgmisnew.database.PgmisLoantbl;
+import com.jslps.pgmisnew.database.Pgmisloanrepaymenttabl;
 import com.jslps.pgmisnew.interactor.ReceiptRepotInteractor;
 //import com.jslps.pgmisnew.view.PaymentReceiptReport;
 import com.jslps.pgmisnew.view.ReceiptReport;
@@ -40,11 +42,11 @@ public class ReceiptReportPresenter implements ReceiptRepotInteractor.paymentRec
         return interactor.getPgReceiptList(this,pgcode);
     }
 
-    //=================== PgPaymentTranstbl =======================
+   /* //=================== PgPaymentTranstbl =======================
     public List<PgPaymentTranstbl> getListPaymentTranstableDateWise(String fromDate, String toDate,String pgcode) {
         return interactor.getPgPaymentTransList(fromDate,toDate,pgcode);
     }
-
+*/
     //================== get data from PgReceiptTranList ============
     public List<PgReceiptTranstbl> getListReceiptTranstableDateWise(String fromDate, String toDate, String pgcode) {
         return interactor.getPgReceiptTranList(fromDate,toDate,pgcode);
@@ -60,16 +62,30 @@ public class ReceiptReportPresenter implements ReceiptRepotInteractor.paymentRec
         return interactor.getPgmisLoanList(fromDate,toDate,pgcode);
     }
     //================== get data from Share capital  ============
-    public List<PgCapitalSavetbl> getPgCapitalSavetblList(String fromDate, String toDate, String pgcode) {
+    public List<Pgcapitalsavetbl> getPgCapitalSavetblList(String fromDate, String toDate, String pgcode) {
         return interactor.getPgCapitalSavetblList(fromDate,toDate,pgcode);
     }
-
     //================== get data from member fee  ====================
-    public List<PgMemShipFeeSavetbl> getPgMemShipFeeSavetblList(String fromDate, String toDate, String pgcode) {
+    public List<Pgmemshipfeesavetbl> getPgMemShipFeeSavetblList(String fromDate, String toDate, String pgcode) {
         return interactor.getPgMemShipFeeSavetblList(fromDate,toDate,pgcode);
     }
-
-
+    //================ get data from batchloan  ========================
+    public List<PgmisBatchLoantbl> getPgmisBatchLoantblList(String fromDate, String toDate, String pgcode) {
+        return interactor.getPgmisBatchLoantblList(fromDate,toDate,pgcode);
+    }
+    //================ get data from from loan payment  ========
+    public List<Pgmisloanrepaymenttabl> getPgmisloanrepaymenttablList(String fromDate, String toDate, String pgcode) {
+        return interactor.getPgmisloanrepaymenttablList(fromDate,toDate,pgcode);
+    }
+    //================ get data from loan and sale ========
+    public List<PgmisLoantbl> getPgmisLoantblList(String fromDate, String toDate, String pgcode) {
+        return interactor.getPgmisLoantblList(fromDate,toDate,pgcode);
+    }
+    //================ get data from Receipt disbursment ========
+  /*  public List<PgReceiptDisData> getReceiptDisbursment(String fromDate, String toDate, String pgcode) {
+        return interactor.getReceiptDisbursment(fromDate,toDate,pgcode);
+    }
+*/
     public void getReport() {
         view.getReport();
     }

@@ -1,14 +1,16 @@
 package com.jslps.pgmisnew.adapter;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.jslps.pgmisnew.GeneratePdfReceiptReportActivity;
+import com.jslps.pgmisnew.GeneratePdfbrsReportActivity;
 import com.jslps.pgmisnew.PgActivity;
 import com.jslps.pgmisnew.R;
 import com.jslps.pgmisnew.database.Blocktbl;
@@ -126,12 +128,12 @@ public class PdfBrsReportAdapter extends RecyclerView.Adapter<PdfBrsReportAdapte
         if(position==0){
             //================ print date =================
             holder.constraintLayout7.setVisibility(View.VISIBLE);
-            if(GeneratePdfReceiptReportActivity.from.equals("Select Date")){
-                holder.textView92.setText("Upto: "+GeneratePdfReceiptReportActivity.to);
-            }else if(GeneratePdfReceiptReportActivity.to.equals("Select Date")){
-                holder.textView92.setText("From: "+GeneratePdfReceiptReportActivity.from);
+            if(GeneratePdfbrsReportActivity.from.equals("Select Date")){
+                holder.textView92.setText("Upto: "+GeneratePdfbrsReportActivity.to);
+            }else if(GeneratePdfbrsReportActivity.to.equals("Select Date")){
+                holder.textView92.setText("From: "+GeneratePdfbrsReportActivity.from);
             }else{
-                holder.textView92.setText("From: "+GeneratePdfReceiptReportActivity.from+" To: "+GeneratePdfReceiptReportActivity.to);
+                holder.textView92.setText("From: "+GeneratePdfbrsReportActivity.from+" To: "+GeneratePdfbrsReportActivity.to);
             }
 
             //================= print PG details ===========
@@ -182,10 +184,6 @@ public class PdfBrsReportAdapter extends RecyclerView.Adapter<PdfBrsReportAdapte
             holder.lastlayout.setVisibility(View.GONE);
         }
 
-//        holder.textView76.setText(item.getHeadname());
-//        holder.textView77.setText(item.getReceivedamount());
-//        holder.textView78.setText(item.getPaymentamount());
-//        holder.textView79.setText(item.getPaymentmode());
         holder.textView85.setText(PgActivity.pgNameSelected);
 
         holder.dateText.setText(item.getMonth());
@@ -194,16 +192,9 @@ public class PdfBrsReportAdapter extends RecyclerView.Adapter<PdfBrsReportAdapte
         holder.paymentAmtText.setText(item.getBalancePassbook());
         holder.paymentModeTxt.setText("");
 
-
-
-
     }
-
-
     @Override
     public int getItemCount() {
         return list.size();
     }
-
-
 }

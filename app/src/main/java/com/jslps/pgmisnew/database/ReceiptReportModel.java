@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReceiptReportModel {
+
     private String headname;
     private String receivedamount;
     private String paymentamount;
@@ -12,6 +13,8 @@ public class ReceiptReportModel {
     private String paymentmode;
     public int sortDateReference;
 
+    Date dates = null;
+    int outputDateString = 0;
 
     public String getDate() {
         return date;
@@ -65,23 +68,25 @@ public class ReceiptReportModel {
         this.sortDateReference = sortDateReference;
     }
 
-
     //=========== change date formate ========
     public int parseDate(String inputDateString) {
-
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyyMMdd");
-
-        Date date = null;
-        int outputDateString=0;
-        try {
-            date = inputDateFormat.parse(inputDateString);
-            outputDateString = Integer.parseInt(outputDateFormat.format(date));
-        } catch (ParseException e) {
-                e.printStackTrace();
-        }
-         return outputDateString;
+      try {
+          SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+          SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+          try {
+              try {
+                  dates = inputDateFormat.parse(inputDateString);
+                  outputDateString = Integer.parseInt(outputDateFormat.format(dates));
+              }catch (ParseException e){
+                  e.printStackTrace();
+              }
+          } catch (NullPointerException e) {
+              e.printStackTrace();
+          }
+      }catch (NumberFormatException e){
+          e.printStackTrace();
+      }
+        return outputDateString;
     }
-
 }
 

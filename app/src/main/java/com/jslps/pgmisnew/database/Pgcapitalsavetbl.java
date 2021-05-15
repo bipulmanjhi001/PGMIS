@@ -2,37 +2,33 @@ package com.jslps.pgmisnew.database;
 
 import com.orm.SugarRecord;
 
-public class PgCapitalSavetbl  extends SugarRecord {
+public class Pgcapitalsavetbl extends SugarRecord {
 
     private String Pgcode;
     private String Grpmemcode;
     private String Grpcode;
-
     private String Membername;
-    private String amount;
+    private String Amount;
     private String Isexported;
-
-    private String Uid;
+    private String Uuid;
     private String createddate;
-    private String paymentdate;
+    private String Paymentdate;
+    private String Paymentmode;
 
-    private String paymentmode;
-
-    public PgCapitalSavetbl(){
-
+    public Pgcapitalsavetbl() {
     }
 
-    public PgCapitalSavetbl(String pgcode, String grpmemcode, String grpcode, String membername, String amount, String isexported, String uid, String created_date, String payment_date, String payment_mode) {
-        Pgcode = pgcode;
+    public Pgcapitalsavetbl(String Pgcode, String grpmemcode, String grpcode, String membername, String amount, String isexported, String uuid, String createddate, String Paymentdate, String paymentmode) {
+        this.Pgcode = Pgcode;
         Grpmemcode = grpmemcode;
         Grpcode = grpcode;
         Membername = membername;
-        this.amount = amount;
+        Amount = amount;
         Isexported = isexported;
-        Uid = uid;
-        this.createddate = created_date;
-        this.paymentdate = payment_date;
-        this.paymentmode = payment_mode;
+        Uuid = uuid;
+        this.createddate = createddate;
+        this.Paymentdate = Paymentdate;
+        this.Paymentmode = paymentmode;
     }
 
     public String getPgcode() {
@@ -40,7 +36,7 @@ public class PgCapitalSavetbl  extends SugarRecord {
     }
 
     public void setPgcode(String pgcode) {
-        Pgcode = pgcode;
+        pgcode = pgcode;
     }
 
     public String getGrpmemcode() {
@@ -68,11 +64,11 @@ public class PgCapitalSavetbl  extends SugarRecord {
     }
 
     public String getAmount() {
-        return amount;
+        return Amount;
     }
 
     public void setAmount(String amount) {
-        this.amount = amount;
+        Amount = amount;
     }
 
     public String getIsexported() {
@@ -83,12 +79,12 @@ public class PgCapitalSavetbl  extends SugarRecord {
         Isexported = isexported;
     }
 
-    public String getUid() {
-        return Uid;
+    public String getUuid() {
+        return Uuid;
     }
 
-    public void setUid(String uid) {
-        Uid = uid;
+    public void setUuid(String uuid) {
+        Uuid = uuid;
     }
 
     public String getCreateddate() {
@@ -100,18 +96,18 @@ public class PgCapitalSavetbl  extends SugarRecord {
     }
 
     public String getPaymentdate() {
-        return paymentdate;
+        return Paymentdate;
     }
 
     public void setPaymentdate(String paymentdate) {
-        this.paymentdate = paymentdate;
+        this.Paymentdate = paymentdate;
     }
 
     public String getPaymentmode() {
-        return paymentmode;
+        return Paymentmode;
     }
 
     public void setPaymentmode(String paymentmode) {
-        this.paymentmode = paymentmode;
+        this.Paymentmode = paymentmode;
     }
 }

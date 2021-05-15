@@ -1,4 +1,4 @@
-package com.jslps.pgmisnew.util;
+package com.jslps.pgmisnew.view;
 
 import com.jslps.pgmisnew.database.PgPaymentHeadModel;
 
@@ -32,11 +32,8 @@ public class SeedDataPgPaymentHead {
         List<PgPaymentHeadModel> list = new ArrayList<>();
         for (int i = 0; i < budget_code.length; i++)
         {
-
             PgPaymentHeadModel pgPaymentHeadModel = new PgPaymentHeadModel(budget_code[i],head_name[i]);
-            // Binds all strings into an array
             list.add(pgPaymentHeadModel);
-
         }
         return list;
     }

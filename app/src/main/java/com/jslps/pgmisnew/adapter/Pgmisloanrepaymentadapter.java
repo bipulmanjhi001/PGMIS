@@ -1,7 +1,8 @@
 package com.jslps.pgmisnew.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,10 @@ public class Pgmisloanrepaymentadapter extends RecyclerView.Adapter<Pgmisloanrep
     class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textView119)
         TextView textView119;
-        @BindView(R.id.textView120)
-        TextView textView120;
-        @BindView(R.id.textView121)
-        TextView textView121;
-        @BindView(R.id.textView122)
-        TextView textView122;
+        @BindView(R.id.textView76)
+        TextView textView76;
+        @BindView(R.id.textView77)
+        TextView textView77;
         @BindView(R.id.Payment_type)
         TextView Payment_type;
 
@@ -48,7 +47,6 @@ public class Pgmisloanrepaymentadapter extends RecyclerView.Adapter<Pgmisloanrep
     public Pgmisloanrepaymentadapter(Context context, List<Pgmisloanrepaymenttabl> itemList) {
         this.context = context;
         this.list = itemList;
-
     }
 
     @NotNull
@@ -63,9 +61,9 @@ public class Pgmisloanrepaymentadapter extends RecyclerView.Adapter<Pgmisloanrep
     @Override
     public void onBindViewHolder(@NotNull MyViewHolder holder, int position) {
         Pgmisloanrepaymenttabl item = list.get(position);
-        holder.textView121.setText(item.getEntrydate());
-        holder.textView122.setText(item.getAmount());
-        holder.Payment_type.setText(item.getPaymentdate()+"("+item.getSelectedPaymentMode()+")");
+        holder.textView76.setText(item.getPaymentdate());
+        holder.textView77.setText(item.getAmount());
+        holder.Payment_type.setText(item.getSelectedPaymentMode());
     }
 
     @Override

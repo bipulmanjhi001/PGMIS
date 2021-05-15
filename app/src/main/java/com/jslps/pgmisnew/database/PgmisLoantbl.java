@@ -17,16 +17,16 @@ public class PgmisLoantbl extends SugarRecord {
     private String isexported;
     private String entrydate;
     private String entryby;
-    private String appliedforloan;// should be 1 or 0  1 means loan or batch created and vice versa
+    private String appliedforloan;
     private String quantity;
     private String paymentdate;
+    private String BMID;
 
     public PgmisLoantbl() {
+
     }
 
-    public PgmisLoantbl(String uuid, String pgcode, String grpcode, String grpmemcode, String itemcode,
-                        String itemname, String rate, String unit, String isexported, String entrydate, String entryby,
-                        String appliedforloan, String quantity, String paymentdate) {
+    public PgmisLoantbl(String uuid, String pgcode, String grpcode, String grpmemcode, String itemcode, String itemname, String rate, String unit, String isexported, String entrydate, String entryby, String appliedforloan, String quantity, String paymentdate, String BMID) {
         this.uuid = uuid;
         this.pgcode = pgcode;
         this.grpcode = grpcode;
@@ -41,6 +41,7 @@ public class PgmisLoantbl extends SugarRecord {
         this.appliedforloan = appliedforloan;
         this.quantity = quantity;
         this.paymentdate = paymentdate;
+        this.BMID = BMID;
     }
 
     public String getUuid() {
@@ -155,5 +156,11 @@ public class PgmisLoantbl extends SugarRecord {
         this.paymentdate = paymentdate;
     }
 
+    public String getBMID() {
+        return BMID;
+    }
 
+    public void setBMID(String BMID) {
+        this.BMID = BMID;
+    }
 }

@@ -3,14 +3,16 @@ package com.jslps.pgmisnew;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,28 +20,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jslps.pgmisnew.adapter.BrsReportAdapter;
-import com.jslps.pgmisnew.adapter.PgReceiptReportAdapter;
 import com.jslps.pgmisnew.database.BrsReportModel;
 import com.jslps.pgmisnew.database.Itempurchasedbypgtbl;
-import com.jslps.pgmisnew.database.PaymentReceiptReportModel;
-import com.jslps.pgmisnew.database.PgCapitalSavetbl;
-import com.jslps.pgmisnew.database.PgMemShipFeeSavetbl;
+import com.jslps.pgmisnew.database.Pgcapitalsavetbl;
+import com.jslps.pgmisnew.database.Pgmemshipfeesavetbl;
 import com.jslps.pgmisnew.database.PgPaymentTranstbl;
 import com.jslps.pgmisnew.database.PgReceiptDisData;
 import com.jslps.pgmisnew.database.PgReceiptTranstbl;
-import com.jslps.pgmisnew.database.PgmisLoantbl;
 import com.jslps.pgmisnew.database.Pgmisbrstranstbl;
 import com.jslps.pgmisnew.database.ReceiptAmountSumModel;
-import com.jslps.pgmisnew.database.ReceiptReportModel;
 import com.jslps.pgmisnew.interactor.BrsRepotInteractor;
-import com.jslps.pgmisnew.interactor.ReceiptRepotInteractor;
 import com.jslps.pgmisnew.presenter.BrsReportPresenter;
-import com.jslps.pgmisnew.presenter.ReceiptReportPresenter;
 import com.jslps.pgmisnew.view.BrsReport;
-import com.jslps.pgmisnew.view.ReceiptReport;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +45,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class BrsReportActivity extends AppCompatActivity implements BrsReport, DatePickerDialog.OnDateSetListener {
+
     String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
     };
@@ -79,10 +75,8 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
     ImageView imageView20;
     @BindView(R.id.constraintLayout2)
     ConstraintLayout constraintLayout2;
-
     @BindView(R.id.constraintLayout4)
     ConstraintLayout constraintLayout4;
-
     @BindView(R.id.recyler_list)
     RecyclerView recylerList;
     @BindView(R.id.parentContainer)
@@ -93,20 +87,15 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
     ImageView imageView21;
     @BindView(R.id.imageView22)
     ImageView pdf;
-
     @BindView(R.id.totalPaymentAmt)
     TextView totalPaymentAmt;
     @BindView(R.id.totalReceivedAmt)
     TextView totalReceivedAmt;
 
-
     //Class Globals
     BrsReportPresenter presenter;
     BrsReportAdapter aAdapter;
-
     List<Pgmisbrstranstbl> pgBrstranstblList;
-
-
     List<PgReceiptDisData> receiptDisDataList;
     List<ReceiptAmountSumModel> receiptAmountSumModelList;
     boolean isMatched;
@@ -114,8 +103,8 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
     List<PgPaymentTranstbl> pgPaymentTranstblList;
     List<PgReceiptTranstbl> pgReceiptTranstblList;
     List<Itempurchasedbypgtbl> itempurchasedbypgtblList;
-    List<PgMemShipFeeSavetbl> pgMemShipFeeList;
-    List<PgCapitalSavetbl> pgMemCapitalList;
+    List<Pgmemshipfeesavetbl> pgMemShipFeeList;
+    List<Pgcapitalsavetbl> pgMemCapitalList;
     List<BrsReportModel> finalReportList;
 
     Double totalCashbook= 0.0;
@@ -126,54 +115,21 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brs_report);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         init();
     }
+
     private void init() {
         //initialization
         presenter = new BrsReportPresenter(new BrsRepotInteractor(), this);
         presenter.setPgName();
-      // receiptDisDataList = presenter.getReceiptAmountData(PgActivity.pgCodeSelected);
-
+        // receiptDisDataList = presenter.getReceiptAmountData(PgActivity.pgCodeSelected);
         //adding amount for same budgetid for receiptDisDataList
         //addAmountreceiptDisDataList();
     }
-
-//    private void addAmountreceiptDisDataList() {
-//        receiptAmountSumModelList = new ArrayList<>();
-//        if (receiptDisDataList.size() > 0) {
-//            for (int i = 0; i < receiptDisDataList.size(); i++) {
-//                isMatched = false;
-//                ReceiptAmountSumModel item = new ReceiptAmountSumModel();
-//                item.setBudgetid(receiptDisDataList.get(i).getBudgetid());
-//                item.setAmount(receiptDisDataList.get(i).getEkoshamount());
-//                item.setHeadname(receiptDisDataList.get(i).getBudgethead());
-//                if (receiptAmountSumModelList.size() == 0) {
-//                    //for size zero
-//                    receiptAmountSumModelList.add(item);
-//                } else {
-//                    for (int j = 0; j < receiptAmountSumModelList.size(); j++) {
-//                        String budgetid = receiptAmountSumModelList.get(j).getBudgetid();
-//                        String amount = receiptAmountSumModelList.get(j).getAmount();
-//                        if (budgetid.equals(receiptDisDataList.get(i).getBudgetid())) {
-//                            double newAmount = Double.parseDouble(amount) + Double.parseDouble(receiptDisDataList.get(i).getEkoshamount());
-//                            item.setAmount(newAmount + "");
-//                            receiptAmountSumModelList.set(j, item);
-//                            isMatched = true;
-//                            //since matched terminate internal loop
-//                            j = receiptAmountSumModelList.size();
-//                        }
-//                    }
-//                    //
-//                    if (!isMatched) {
-//                        receiptAmountSumModelList.add(item);
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
 
     @OnClick({R.id.imageView19, R.id.imageView20, R.id.button5,R.id.imageView21,R.id.imageView22})
     public void onViewClicked(View view) {
@@ -190,6 +146,19 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                     pgBrstranstblList = presenter.getListBrsTranstableDateWise(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
                     //=========== generate reort =========
                     generateReport();
+                }else {
+                    new SweetAlertDialog(BrsReportActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Select at least One date")
+                            .setContentText("No data found")
+                            .setConfirmText("Exit")
+                            .showCancelButton(true)
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.cancel();
+                                }
+                            })
+                            .show();
                 }
                 break;
             case R.id.imageView21:
@@ -207,14 +176,13 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                                 .requestPermissions(this, PERMISSIONS, 1);
                     }else{
                         //generate pdf here
-                        Intent intent = new Intent(this,GeneratePdfReceiptReportActivity.class);
+                        Intent intent = new Intent(this,GeneratePdfbrsReportActivity.class);
                         intent.putExtra("from",dateFrom);
                         intent.putExtra("to",dateTo);
                         startActivity(intent);
                     }
                 }
                 break;
-
         }
     }
 
@@ -263,6 +231,7 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
 
     @Override
     public void selectAtLeastOneCalender() {
+
     }
 
     @Override
@@ -281,21 +250,15 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
         String newDay = dayOfMonth + "";
         String newMonth = (monthOfYear + 1) + "";
-
         if ((monthOfYear + 1) < 10) {
             newMonth = "0" + newMonth;
         }
-
         if (dayOfMonth < 10) {
             newDay = "0" + dayOfMonth;
         }
-
         String newDate = year + "/" + newMonth + "/" + newDay;
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-        String currentDate = new SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(new Date());
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         Date date1 = null, date2 = null;
         try {
             date1 = sdf.parse(date);
@@ -303,12 +266,10 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         if (date1 != null && date1.compareTo(date2) > 0) {
             Toast.makeText(BrsReportActivity.this, "Please Select Valid Date", Toast.LENGTH_LONG).show();
         } else {
             if (view.getTag().equals("from")) {
-
                 //condition to check from date from date should be less than to date
                 if (textView84.getText().toString().equals("Select Date")) {
                     textView82.setText(newDate);
@@ -320,11 +281,8 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                     } else {
                         Toast.makeText(BrsReportActivity.this, "From Date Can't be Greater than To Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
-
             } else {
-
                 //condition to check from date to date should be greater than from date
                 if (textView82.getText().toString().equals("Select Date")) {
                     textView84.setText(newDate);
@@ -336,10 +294,8 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                     } else {
                         Toast.makeText(BrsReportActivity.this, "To Date Can't be less than From Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
-
         }
     }
 
@@ -353,7 +309,6 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         if (pgBrstranstblList.size() > 0) {
             for (int i = 0; i < pgBrstranstblList.size(); i++) {
                 BrsReportModel item = new BrsReportModel();
-
                 //date corvert
                 String[] fineDate = parseDate2(pgBrstranstblList.get(i).getDate());
                 item.setMonth(fineDate[0]);
@@ -363,20 +318,16 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                 item.setBalancePassbook(pgBrstranstblList.get(i).getBalpassbook());
                 item.setImageCashbook(pgBrstranstblList.get(i).getCashbooklastpageimg());
                 item.setImagePassbook(pgBrstranstblList.get(i).getPassbooklastpageimg());
-
                 finalReportList.add(item);
 
                 totalPassbook = totalPassbook + Double.valueOf(pgBrstranstblList.get(i).getBalpassbook());
                 totalCashbook = totalCashbook + Double.valueOf(pgBrstranstblList.get(i).getBalcashbook());
-
             }
         }
-
 
         //================ update total amount =============
         totalPaymentAmt.setText(String.valueOf(totalPassbook));
         totalReceivedAmt.setText(String.valueOf(totalCashbook));
-
         //=========== sort the array date =====
         //=========== update on recycler ===========
         aAdapter = new BrsReportAdapter(this, finalReportList,presenter);
@@ -384,17 +335,14 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerList.setLayoutManager(verticalLayoutmanager);
         recylerList.setAdapter(aAdapter);
-
         generatePdfReport();//============ adding this for generate pdf file
-
         System.out.println("");
-
     }
 
     //=========== change date formate ========
     public static String parseDate(String inputDateString) {
 
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
         SimpleDateFormat inputDateFormat2 = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
         SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
@@ -418,7 +366,7 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
 
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat outputDateFormatMonth = new SimpleDateFormat("MMMM");
-        SimpleDateFormat outputDateFormatYear = new SimpleDateFormat("YYYY");
+        SimpleDateFormat outputDateFormatYear = new SimpleDateFormat("yyyy");
 
         Date date = null;
         String outputDateString = null;
@@ -438,14 +386,10 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         return fineDate;
     }
 
-
 //============= generate pdf =======
     public void generatePdfReport(){
-
         pdfGenerateDataList = new ArrayList<>();
-
         BrsReportModel header = new BrsReportModel();
-
         header.setMonth("Month");
         header.setYear("Year");
         header.setBalanceCashbook("Balance ( CashBook)");
@@ -453,10 +397,7 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         header.setDate("Date");
         header.setPaymentmode("View");
         pdfGenerateDataList.add(header);
-
-
         pdfGenerateDataList.addAll(finalReportList);
-
         BrsReportModel Footer = new BrsReportModel();
         Footer.setYear("Total");
         Footer.setBalanceCashbook(String.valueOf(totalCashbook));
@@ -464,7 +405,6 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
 //        Footer.setDate("");
 //        Footer.setPaymentmode("");
         pdfGenerateDataList.add(Footer);
-
     }
 
     //============ open full image =====
@@ -476,5 +416,4 @@ public class BrsReportActivity extends AppCompatActivity implements BrsReport, D
         startActivity(intent);
          //Toast.makeText(this,"View cashbook Image :"+imageName,Toast.LENGTH_SHORT).show();
     }
-
 }

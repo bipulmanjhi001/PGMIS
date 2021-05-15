@@ -1,8 +1,9 @@
 package com.jslps.pgmisnew.database;
 
+import com.orm.SugarRecord;
 import com.orm.dsl.Unique;
 
-public class PgmisChequeLoan {
+public class PgmisChequeLoantbl extends SugarRecord {
 
     @Unique
     private String uuid;
@@ -17,13 +18,12 @@ public class PgmisChequeLoan {
     private String amount;
     private String remark;
     private String paymentmode;
-    private String BMID;
 
-    public PgmisChequeLoan() {
+    public PgmisChequeLoantbl() {
 
     }
 
-    public PgmisChequeLoan(String uuid, String pgcode, String grpcode, String grpmemcode, String isexported, String entrydate, String entryby, String appliedforloan, String chequedate, String amount, String remark, String paymentmode, String BMID) {
+    public PgmisChequeLoantbl(String uuid, String pgcode, String grpcode, String grpmemcode, String isexported, String entrydate, String entryby, String appliedforloan, String chequedate, String amount, String remark, String paymentmode) {
         this.uuid = uuid;
         this.pgcode = pgcode;
         this.grpcode = grpcode;
@@ -36,6 +36,101 @@ public class PgmisChequeLoan {
         this.amount = amount;
         this.remark = remark;
         this.paymentmode = paymentmode;
-        this.BMID = BMID;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getPgcode() {
+        return pgcode;
+    }
+
+    public void setPgcode(String pgcode) {
+        this.pgcode = pgcode;
+    }
+
+    public String getGrpcode() {
+        return grpcode;
+    }
+
+    public void setGrpcode(String grpcode) {
+        this.grpcode = grpcode;
+    }
+
+    public String getGrpmemcode() {
+        return grpmemcode;
+    }
+
+    public void setGrpmemcode(String grpmemcode) {
+        this.grpmemcode = grpmemcode;
+    }
+
+    public String getIsexported() {
+        return isexported;
+    }
+
+    public void setIsexported(String isexported) {
+        this.isexported = isexported;
+    }
+
+    public String getEntrydate() {
+        return entrydate;
+    }
+
+    public void setEntrydate(String entrydate) {
+        this.entrydate = entrydate;
+    }
+
+    public String getEntryby() {
+        return entryby;
+    }
+
+    public void setEntryby(String entryby) {
+        this.entryby = entryby;
+    }
+
+    public String getAppliedforloan() {
+        return appliedforloan;
+    }
+
+    public void setAppliedforloan(String appliedforloan) {
+        this.appliedforloan = appliedforloan;
+    }
+
+    public String getChequedate() {
+        return chequedate;
+    }
+
+    public void setChequedate(String chequedate) {
+        this.chequedate = chequedate;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getPaymentmode() {
+        return paymentmode;
+    }
+
+    public void setPaymentmode(String paymentmode) {
+        this.paymentmode = paymentmode;
     }
 }

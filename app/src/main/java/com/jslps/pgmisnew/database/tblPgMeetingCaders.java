@@ -1,8 +1,9 @@
 package com.jslps.pgmisnew.database;
 
+import com.orm.SugarRecord;
 import com.orm.dsl.Unique;
 
-public class PgMeetingCaders {
+public class tblPgMeetingCaders extends SugarRecord {
 
     @Unique
     private String Meetingid;
@@ -10,15 +11,15 @@ public class PgMeetingCaders {
     private String Pgcode;
     private String Isxported;
 
-    public PgMeetingCaders() {
+    public tblPgMeetingCaders() {
 
     }
 
-    public PgMeetingCaders(String meetingid, String cadreid, String pgcode, String isxported) {
-        this.Meetingid = meetingid;
-        this.Cadreid = cadreid;
-        this.Pgcode = pgcode;
-        this.Isxported = isxported;
+    public tblPgMeetingCaders(String meetingid, String cadreid, String pgcode, String isxported) {
+        Meetingid = meetingid;
+        Cadreid = cadreid;
+        Pgcode = pgcode;
+        Isxported = isxported;
     }
 
     public String getMeetingid() {

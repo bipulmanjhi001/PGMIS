@@ -4,7 +4,8 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Unique;
 
 public class Pgmisloanrepaymenttabl extends SugarRecord {
-    @Unique
+
+    private String pgcode;
     private String uuid;
     private String loanid;
     private String entrydate;
@@ -17,14 +18,23 @@ public class Pgmisloanrepaymenttabl extends SugarRecord {
 
     }
 
-    public Pgmisloanrepaymenttabl(String uuid, String loanid, String entrydate, String amount, String isexported, String selectedPaymentMode, String payment_date) {
+    public Pgmisloanrepaymenttabl(String pgcode, String uuid, String loanid, String entrydate, String amount, String isexported, String selectedPaymentMode, String paymentdate) {
+        this.pgcode = pgcode;
         this.uuid = uuid;
         this.loanid = loanid;
         this.entrydate = entrydate;
         this.amount = amount;
         this.isexported = isexported;
         this.selectedPaymentMode = selectedPaymentMode;
-        this.paymentdate = payment_date;
+        this.paymentdate = paymentdate;
+    }
+
+    public String getPgcode() {
+        return pgcode;
+    }
+
+    public void setPgcode(String pgcode) {
+        this.pgcode = pgcode;
     }
 
     public String getUuid() {

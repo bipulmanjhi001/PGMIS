@@ -1,4 +1,4 @@
-package com.jslps.pgmisnew.interactor;
+package com.jslps.pgmisnew.presenter;
 
 
 import com.jslps.pgmisnew.database.Pgmisbrstranstbl;

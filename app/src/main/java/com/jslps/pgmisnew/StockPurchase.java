@@ -1,50 +1,61 @@
 package com.jslps.pgmisnew;
 
-import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.jslps.pgmisnew.adapter.PgItemPurcahseAdapter;
 import com.jslps.pgmisnew.database.Itempurchasedbypgtbl;
+import com.jslps.pgmisnew.database.Pgmemshipfeesavetbl;
 import com.jslps.pgmisnew.database.Pgmisstockmsttbl;
 import com.jslps.pgmisnew.database.TblMstPgPaymentReceipthead;
+import com.jslps.pgmisnew.interactor.PgBankWithdrawInteractor;
+import com.jslps.pgmisnew.interactor.StockPurchaseInterface;
+import com.jslps.pgmisnew.presenter.PgBankWithdrawPresenter;
+import com.jslps.pgmisnew.presenter.StockPurchasePresenter;
 import com.jslps.pgmisnew.util.GetCurrentDate;
+import com.jslps.pgmisnew.view.StockPurchaseView;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StockPurchase extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+public class StockPurchase extends AppCompatActivity implements StockPurchaseView,AdapterView.OnItemSelectedListener,
         DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.spinner2)
     SearchableSpinner spinnerItem;
-    @BindView(R.id.spinner4)
+    @BindView(R.id.spinner_purchase)
     Spinner spinnerUnit;
     @BindView(R.id.et_rate)
     TextInputEditText etRate;
@@ -63,33 +74,39 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
     @BindView(R.id.imageView16)
     ImageView imageView16;
     DatePickerDialog mDatePicker;
+    ArrayList<String> arrayList;
 
     Calendar c;
     private int mYear, mMonth, mDay;
+    ArrayAdapter<String> arrayAdapter;
     List<Pgmisstockmsttbl> pgmisstockmsttblList;
     List<TblMstPgPaymentReceipthead> pgPaymentHeadModelList;
     TblMstPgPaymentReceipthead headModelSelected;
     Pgmisstockmsttbl itemModelSelected;
-    String unitSelected, paymentmode;
+    String unitSelected,unitSelected1,paymentmode,newDate,demo,
+            getdefineunit,unitSelected2,unitSelected3;
     List<Itempurchasedbypgtbl> itempurchasedbypgtblList;
 
     public ArrayAdapter<TblMstPgPaymentReceipthead> headSpinAdapter;
     public ArrayAdapter<Pgmisstockmsttbl> itemSpinAdapter;
     @BindView(R.id.textView23)
     TextView pgName;
+    StockPurchasePresenter presenter;
     PgItemPurcahseAdapter aAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_purchase);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         ButterKnife.bind(this);
         init();
     }
 
     private void init() {
+        presenter = new StockPurchasePresenter(new StockPurchaseInterface(), this);
         spinnerItem.setOnItemSelectedListener(this);
-        spinnerUnit.setOnItemSelectedListener(this);
         spinnnerHead.setOnItemSelectedListener(this);
         spinnermodeofpayment.setOnItemSelectedListener(this);
         pgName.setText(PgActivity.pgNameSelected);
@@ -105,37 +122,75 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                 .where(Condition.prop("budgettype").eq("Loan"))
                 .where(Condition.prop("showin").eq("P"))
                 .list();
-        TblMstPgPaymentReceipthead datainit = new TblMstPgPaymentReceipthead("0", "0", "मद का नाम चुने", "", "", "");
-        pgPaymentHeadModelList.add(datainit);
-        pgmisstockmsttblList = Pgmisstockmsttbl.listAll(Pgmisstockmsttbl.class);
 
+        TblMstPgPaymentReceipthead datainit = new TblMstPgPaymentReceipthead("0", "0", "0", "", "मद का नाम चुने", "","");
+        pgPaymentHeadModelList.add(datainit);
+
+        pgmisstockmsttblList = Pgmisstockmsttbl.listAll(Pgmisstockmsttbl.class);
         setSpinners();
-        setRecyclerView();
+        presenter.setRecyclerView();
+
+        //  setRecyclerView();
+        arrayList = new ArrayList<String>();
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item,arrayList);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerUnit.setAdapter(arrayAdapter);
+        spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    unitSelected = arrayAdapter.getItem(position);
+                    Log.d("unitselected", unitSelected);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+           }
+           @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
-    private void setRecyclerView() {
-        itempurchasedbypgtblList = Select.from(Itempurchasedbypgtbl.class)
-                .where(Condition.prop("pgcode").eq(PgActivity.pgCodeSelected))
-                .list();
-        Collections.reverse(itempurchasedbypgtblList);
+    @Override
+    public void editRecord(Itempurchasedbypgtbl item) {
 
-        aAdapter = new PgItemPurcahseAdapter(this, itempurchasedbypgtblList);
+    }
+
+    @Override
+    public void setRecyclerView() {
+        itempurchasedbypgtblList = presenter.getStockPurchaseItem(PgActivity.pgCodeSelected);
+        Collections.reverse(itempurchasedbypgtblList);
+        aAdapter = new PgItemPurcahseAdapter(this, itempurchasedbypgtblList,presenter);
         LinearLayoutManager verticalLayoutmanager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerList.setLayoutManager(verticalLayoutmanager);
         recylerList.setAdapter(aAdapter);
+
     }
 
+    @Override
+    public void dataSaved() {
+        new StyleableToast
+                .Builder(this)
+                .text("डेटा सफलतापूर्वक सहेजा गया")
+                .iconStart(R.drawable.right)
+                .textColor(Color.WHITE)
+                .backgroundColor(getResources().getColor(R.color.colorPrimary))
+                .show();
+
+        presenter.setRecyclerView();
+    }
 
     private void setSpinners() {
         Collections.reverse(pgPaymentHeadModelList);
-        headSpinAdapter = new ArrayAdapter<TblMstPgPaymentReceipthead>(this, android.R.layout.simple_spinner_dropdown_item, pgPaymentHeadModelList) {
-
+        headSpinAdapter = new ArrayAdapter<TblMstPgPaymentReceipthead>(this,
+                android.R.layout.simple_spinner_dropdown_item, pgPaymentHeadModelList) {
         };
         spinnnerHead.setAdapter(headSpinAdapter);
 
-        itemSpinAdapter = new ArrayAdapter<Pgmisstockmsttbl>(this, android.R.layout.simple_spinner_dropdown_item, pgmisstockmsttblList) {
-
+        itemSpinAdapter = new ArrayAdapter<Pgmisstockmsttbl>(this,
+                android.R.layout.simple_spinner_dropdown_item, pgmisstockmsttblList) {
         };
         spinnerItem.setAdapter(itemSpinAdapter);
     }
@@ -153,26 +208,25 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                 );
                 dpd.setAccentColor(getResources().getColor(R.color.colorPrimaryDark));
                 dpd.show(getFragmentManager(), "Datepickerdialog");
-              break;
+
+                break;
 
             case R.id.button4:
                 if(validation()) {
-                    Itempurchasedbypgtbl data = new Itempurchasedbypgtbl(UUID.randomUUID().toString(),
+                    presenter.saveData(UUID.randomUUID().toString(),
                             itemModelSelected.getItemcode(),
                             itemModelSelected.getItemname(),
                             unitSelected,
                             etRate.getText().toString(),
                             etQuantity.getText().toString(),
                             headModelSelected.getHeadname(),
-                            headModelSelected.getBudgetcode(),
+                            headModelSelected.getBudgetid(),
                             PgActivity.pgCodeSelected,
                             new GetCurrentDate().getDate(),
                             "0",
                             paymentmode,
-                            textView71.getText().toString());
-
-                    data.save();
-                    setRecyclerView();
+                            newDate,
+                            headModelSelected.getBMID());
 
                     new StyleableToast
                             .Builder(this)
@@ -197,36 +251,219 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                 }
                 headModelSelected = (TblMstPgPaymentReceipthead) adapterView.getSelectedItem();
                 break;
-
             case R.id.spinner2:
-                // First item will be gray
-                if (position == 0) {
-                    ((TextView) view).setText("आइटम का नाम चुनें");
-                    ((TextView) view).setTextColor(ContextCompat.getColor(this, R.color.colorGrayHint));
-                }
-
                 itemModelSelected = (Pgmisstockmsttbl) adapterView.getSelectedItem();
-                break;
+                getdefineunit = adapterView.getSelectedItem().toString();
+                if (getdefineunit.equals("आइटम का नाम चुनें")) {
+                    arrayList.clear();
+                    unitSelected1 = "इकाई को चुने";
+                    arrayList.add(unitSelected1);
+                    arrayAdapter.notifyDataSetChanged();
 
-            case R.id.spinner4:
+                } else if (getdefineunit.equals("बीज")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
 
-                unitSelected = adapterView.getSelectedItem().toString();
-                if(unitSelected.equals("किलो")){
-                    unitSelected="Kilo";
-                } else if(unitSelected.equals("ग्राम")){
-                unitSelected="Gram";
-                 }
+                } else if (getdefineunit.equals("उर्वरक")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
 
+                } else if (getdefineunit.equals("कीटनाशक")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("बकरी")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Number";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("चूजे")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Number";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("सूअर")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Number";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("फीड")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("दवाइयां")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("मछली बीज")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("मछली दाना")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("अन्य वस्तु")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Kg";
+                    unitSelected2 = "Gram";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("पौधा")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Number";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayAdapter.notifyDataSetChanged();
+
+                } else if (getdefineunit.equals("कीटनाशक(तरल)")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Liter";
+                    unitSelected2 = "ML";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                }
+                else if (getdefineunit.equals("उर्वरक(तरल)")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Liter";
+                    unitSelected2 = "ML";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+
+                }
+                else if (getdefineunit.equals("फीड(तरल)")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Liter";
+                    unitSelected2 = "ML";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+                else if (getdefineunit.equals("दवाइयां(तरल)")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Liter";
+                    unitSelected2 = "ML";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+                else if (getdefineunit.equals("अन्य वस्तु(तरल)")) {
+                    arrayList.clear();
+                    demo="इकाई को चुने";
+                    unitSelected1 = "Liter";
+                    unitSelected2 = "ML";
+                    arrayList.add(demo);
+                    arrayList.add(unitSelected1);
+                    arrayList.add(unitSelected2);
+                    arrayAdapter.notifyDataSetChanged();
+                }
                 break;
 
             case R.id.spinnermodeofpayment:
                 paymentmode = adapterView.getSelectedItem().toString();
-                if(paymentmode.equals("नकद")){
-                    paymentmode="Cash";
-                } else if(paymentmode.equals("बैंक")){
-                    paymentmode="Bank";
+                if (paymentmode.equals("इकाई को चुने")) {
+                    paymentmode = "";
+                    etRate.setHint("दर");
+                    etRate.setFocusableInTouchMode(true);
+                    etRate.setFocusable(true);
                 }
-
+                if (paymentmode.equals("नकद")) {
+                    if(etRate.getText().equals("0")) {
+                        paymentmode = "Cash";
+                        etRate.setFocusableInTouchMode(true);
+                        etRate.setFocusable(true);
+                        etRate.setText("");
+                    }else {
+                        paymentmode = "Cash";
+                        etRate.setFocusableInTouchMode(true);
+                        etRate.setFocusable(true);
+                    }
+                }
+                if (paymentmode.equals("बैंक")) {
+                    if(etRate.getText().equals("0")) {
+                        paymentmode = "Bank";
+                        etRate.setFocusableInTouchMode(true);
+                        etRate.setFocusable(true);
+                        etRate.setText("");
+                    }else {
+                        paymentmode = "Bank";
+                        etRate.setFocusableInTouchMode(true);
+                        etRate.setFocusable(true);
+                    }
+                }
+                if(paymentmode.equals("भण्डार")){
+                    paymentmode = "Stock";
+                    etRate.setFocusableInTouchMode(true);
+                    etRate.setFocusable(false);
+                    etRate.setText("0");
+                }
                 break;
         }
     }
@@ -246,7 +483,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        } else if (itemModelSelected.getItemcode().equals("0")) {
+        }
+        else if (itemModelSelected.getItemcode().equals("0")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया आइटम का नाम चुनें")
@@ -254,7 +492,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        } else if (unitSelected.equals("इकाई को चुने")) {
+        }
+        else if (unitSelected.equals("इकाई को चुने")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया इकाई को चुने")
@@ -262,7 +501,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        } else if (etRate.getText().toString().equals("")) {
+        }
+        else if (etRate.getText().toString().equals("")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया दर चुने")
@@ -270,7 +510,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        } else if (etQuantity.getText().toString().equals("")) {
+        }
+        else if (etQuantity.getText().toString().equals("")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया मात्रा का माध्यम चुने")
@@ -278,7 +519,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        } else if (paymentmode.equals("भुगतान का माध्यम")) {
+        }
+        else if (paymentmode.equals("भुगतान का माध्यम")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया भुगतान का माध्यम चुने")
@@ -286,7 +528,8 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
                     .textColor(Color.WHITE)
                     .backgroundColor(getResources().getColor(R.color.colorPrimary))
                     .show();
-        }else if (textView71.getText().toString().equals("")) {
+        }
+        else if (textView71.getText().toString().equals("भुगतान तिथि का चयन करें")) {
             new StyleableToast
                     .Builder(this)
                     .text("कृपया मान्य भुगतान तिथि का चयन करें")
@@ -311,6 +554,7 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
         etQuantity.setText("");
         textView71.setText("भुगतान तिथि का चयन करें");
     }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
@@ -322,10 +566,9 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
         if (dayOfMonth < 10) {
             newDay = "0" + dayOfMonth;
         }
-        String newDate = newMonth + "/" + newDay + "/" + year;
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-        String currentDate = new SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(new Date());
-
+        newDate = year + "/" + newMonth + "/" + newDay;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         Date date1 = null, date2 = null;
         try {
             date1 = sdf.parse(date);
@@ -333,7 +576,6 @@ public class StockPurchase extends AppCompatActivity implements AdapterView.OnIt
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         if (date1 != null && date1.compareTo(date2) > 0) {
             Toast.makeText(StockPurchase.this, "कृपया मान्य तिथि चुने", Toast.LENGTH_LONG).show();
         } else {

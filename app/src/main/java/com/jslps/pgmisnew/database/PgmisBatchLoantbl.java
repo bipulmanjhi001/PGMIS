@@ -15,13 +15,13 @@ public class PgmisBatchLoantbl extends SugarRecord {
     private String amount;
     private String paymentmode;
 
-
-
-
     public PgmisBatchLoantbl() {
     }
 
-    public PgmisBatchLoantbl(String loanid, String itemuuids, String pgcode, String grpcode, String grpmemcode, String entrydate, String isexported,String amount) {
+    public PgmisBatchLoantbl(String loanid, String itemuuids, String pgcode,
+                             String grpcode, String grpmemcode,
+                             String entrydate, String isexported,String amount,String paymentmode) {
+
         this.loanid = loanid;
         this.itemuuids = itemuuids;
         this.pgcode = pgcode;
@@ -30,6 +30,8 @@ public class PgmisBatchLoantbl extends SugarRecord {
         this.entrydate = entrydate;
         this.isexported = isexported;
         this.amount = amount;
+        this.paymentmode = paymentmode;
+
     }
 
     public String getAmount() {
@@ -103,7 +105,4 @@ public class PgmisBatchLoantbl extends SugarRecord {
     public void setPaymentmode(String payment_mode) {
         this.paymentmode = payment_mode;
     }
-
-
-
-}
+  }

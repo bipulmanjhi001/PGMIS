@@ -2,7 +2,7 @@ package com.jslps.pgmisnew.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,12 +103,9 @@ public class BrsReportAdapter extends RecyclerView.Adapter<BrsReportAdapter.MyVi
 
     }
 
-
     @Override
     public int getItemCount() {
         return list.size();
     }
-
-
 
 }

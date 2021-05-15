@@ -1,65 +1,54 @@
 package com.jslps.pgmisnew;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.LruCache;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.jslps.pgmisnew.adapter.PgPaymentReceiptReportAdapter;
 import com.jslps.pgmisnew.adapter.PgReceiptReportAdapter;
 import com.jslps.pgmisnew.database.Itempurchasedbypgtbl;
-import com.jslps.pgmisnew.database.PaymentReceiptReportModel;
-import com.jslps.pgmisnew.database.PgCapitalSavetbl;
-import com.jslps.pgmisnew.database.PgMemShipFeeSavetbl;
+import com.jslps.pgmisnew.database.PgBankwithdrawcashdeposit;
+import com.jslps.pgmisnew.database.Pgcapitalsavetbl;
+import com.jslps.pgmisnew.database.Pgmemshipfeesavetbl;
 import com.jslps.pgmisnew.database.PgPaymentTranstbl;
 import com.jslps.pgmisnew.database.PgReceiptDisData;
 import com.jslps.pgmisnew.database.PgReceiptTranstbl;
+import com.jslps.pgmisnew.database.PgmisBatchLoantbl;
+import com.jslps.pgmisnew.database.PgmisChequeLoantbl;
 import com.jslps.pgmisnew.database.PgmisLoantbl;
+import com.jslps.pgmisnew.database.Pgmisloanrepaymenttabl;
 import com.jslps.pgmisnew.database.ReceiptAmountSumModel;
 import com.jslps.pgmisnew.database.ReceiptReportModel;
-import com.jslps.pgmisnew.interactor.PaymentReceiptRepotInteractor;
 import com.jslps.pgmisnew.interactor.ReceiptRepotInteractor;
-import com.jslps.pgmisnew.presenter.PaymentReceiptReportPresenter;
 import com.jslps.pgmisnew.presenter.ReceiptReportPresenter;
 import com.jslps.pgmisnew.view.ReceiptReport;
-import com.muddzdev.styleabletoastlibrary.StyleableToast;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -67,8 +56,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class PgPaymentReceiptReportActivity extends AppCompatActivity implements ReceiptReport, DatePickerDialog.OnDateSetListener {
+public class PgPaymentReceiptReportActivity extends AppCompatActivity implements ReceiptReport, Comparator<ReceiptReportModel>, DatePickerDialog.OnDateSetListener {
+
     String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
     };
@@ -95,10 +86,8 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
     ImageView imageView20;
     @BindView(R.id.constraintLayout2)
     ConstraintLayout constraintLayout2;
-
     @BindView(R.id.constraintLayout4)
     ConstraintLayout constraintLayout4;
-
     @BindView(R.id.recyler_list)
     RecyclerView recylerList;
     @BindView(R.id.parentContainer)
@@ -109,36 +98,31 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
     ImageView imageView21;
     @BindView(R.id.imageView22)
     ImageView pdf;
-
     @BindView(R.id.totalPaymentAmt)
     TextView totalPaymentAmt;
     @BindView(R.id.totalReceivedAmt)
     TextView totalReceivedAmt;
 
-
     //Class Globals
     ReceiptReportPresenter presenter;
     List<PgReceiptDisData> receiptDisDataList;
     List<ReceiptAmountSumModel> receiptAmountSumModelList;
-    boolean isMatched;
-    boolean isMatched1;
-    boolean isMatched2;
-    List<PgPaymentTranstbl> pgPaymentTranstblList;
-    List<PgPaymentTranstbl> pgPaymentTranstblListSum;
-    List<PaymentReceiptReportModel> paymentReceiptReportModelList = new ArrayList<>();
-    public static List<PaymentReceiptReportModel> pdfGenerateList = new ArrayList<>();
-    List<PaymentReceiptReportModel> paymentReceiptReportModelListNotMatched;
-    PgReceiptReportAdapter aAdapter;
-    List<String> budgetidreportfinallist;
 
+    boolean isMatched;
+    List<PgPaymentTranstbl> pgPaymentTranstblList;
+    PgReceiptReportAdapter aAdapter;
     List<PgReceiptTranstbl> pgReceiptTranstblList;
     List<Itempurchasedbypgtbl> itempurchasedbypgtblList;
-    List<PgMemShipFeeSavetbl> pgMemShipFeeList;
-    List<PgCapitalSavetbl> pgMemCapitalList;
+    List<Pgmemshipfeesavetbl> pgMemShipFeeList;
+    List<Pgcapitalsavetbl> pgMemCapitalList;
+    List<PgmisBatchLoantbl> pgmisBatchLoantblList;
+    List<Pgmisloanrepaymenttabl> pgmisLoanrepaymentList;
+    List<PgmisLoantbl> pgmisLoantblList;
+    List<PgReceiptDisData> pgReceiptDisData;
+    List<PgBankwithdrawcashdeposit> pgBankwithdrawcashdeposits;
+    List<PgmisChequeLoantbl> pgmisChequeLoantbls;
 
-    List<PgmisLoantbl> PgmisLoantblList;
     List<ReceiptReportModel> finalReportList;
-    List<ReceiptReportModel> paymentReceiptReportMlist = new ArrayList<>();
     Double totalRecived= 0.0;
     Double totalPayment = 0.0;
     public static List<ReceiptReportModel> pdfGenerateDataList = new ArrayList<>();
@@ -147,16 +131,17 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pg_receipt_report);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         init();
     }
+
     private void init() {
         //initialization
         presenter = new ReceiptReportPresenter(new ReceiptRepotInteractor(), this);
         presenter.setPgName();
         receiptDisDataList = presenter.getReceiptAmountData(PgActivity.pgCodeSelected);
-
         //adding amount for same budgetid for receiptDisDataList
         addAmountreceiptDisDataList();
     }
@@ -186,12 +171,10 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
                             j = receiptAmountSumModelList.size();
                         }
                     }
-                    //
                     if (!isMatched) {
                         receiptAmountSumModelList.add(item);
                     }
                 }
-
             }
         }
     }
@@ -209,19 +192,38 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
             case R.id.button5:
                 boolean result = validation();
                 if (result) {
-                    pgPaymentTranstblList = presenter.getListPaymentTranstableDateWise(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    pgPaymentTranstblList = getPgPaymentTransList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
                     pgReceiptTranstblList = presenter.getListReceiptTranstableDateWise(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
                     itempurchasedbypgtblList = presenter.getItempurchasedbypgDateWise(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
-                    //=========== share capital and member fee ====
-                    pgMemShipFeeList = presenter.getPgMemShipFeeSavetblList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
-                    pgMemCapitalList = presenter.getPgCapitalSavetblList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
                     //================= loan received ====
-
-                    //==================loan given ========
-
-
+                    pgmisBatchLoantblList = presenter.getPgmisBatchLoantblList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    //================== loan given ========
+                    pgmisLoanrepaymentList = presenter.getPgmisloanrepaymenttablList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    //add membership fee
+                    pgMemShipFeeList = getPgMemShipFeeSavetblList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    //=========== share capital and member fee ====
+                    pgMemCapitalList = getPgCapitalSavetblList(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    // add Receipt Disbursment
+                    pgReceiptDisData = getReceiptDisbursment(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    //add Bank
+                    pgBankwithdrawcashdeposits =getPgBankwithdrawcashdeposits(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
+                    //add chequebank
+                    pgmisChequeLoantbls = getChequeLoan(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
                     generateReport();
-
+                }else {
+                    new SweetAlertDialog(PgPaymentReceiptReportActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Select at least One date")
+                            .setContentText("No data found")
+                            .setConfirmText("Exit")
+                            .showCancelButton(true)
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.cancel();
+                                    finish();
+                                }
+                            })
+                            .show();
                 }
                 break;
             case R.id.imageView21:
@@ -233,13 +235,9 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
                 String dateTo = textView84.getText().toString();
                 if ((dateFrom.equals("Select Date") && dateTo.equals("Select Date"))||pdfGenerateDataList.size()==0) {
                     Toast.makeText(PgPaymentReceiptReportActivity.this,"Please see report first",Toast.LENGTH_SHORT).show();
-
                 }else{
-
                     if (!hasPermissions(PgPaymentReceiptReportActivity.this, PERMISSIONS)) {
-                        ActivityCompat
-                                .requestPermissions(this, PERMISSIONS, 1);
-
+                        ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
                     }else{
                         //generate pdf here
                         Intent intent = new Intent(this,GeneratePdfReceiptReportActivity.class);
@@ -247,10 +245,8 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
                         intent.putExtra("to",dateTo);
                         startActivity(intent);
                     }
-
                 }
                 break;
-
         }
     }
 
@@ -266,13 +262,189 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
         return true;
     }
 
+    //================== get data from PgMemShipFeeSavetbl ===========
+    public List<Pgmemshipfeesavetbl> getPgMemShipFeeSavetblList(String fromDate, String toDate, String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(Pgmemshipfeesavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("paymentdate").lt(toDate))
+                    .or(Condition.prop("paymentdate").eq(toDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+                     //only to date present
+            return Select.from(Pgmemshipfeesavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("paymentdate").lt(toDate))
+                    .or(Condition.prop("paymentdate").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(Pgmemshipfeesavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("paymentdate")
+                            .gt(fromDate),Condition.prop("paymentdate")
+                            .lt(toDate)).or(Condition.prop("paymentdate")
+                            .eq(fromDate)).or(Condition.prop("paymentdate").eq(toDate))
+                    .list();
+        }
+    }
+
+    //  ===================get ChequeLoan details (PgmisChequeLoantbl) ======
+    public List<PgmisChequeLoantbl> getChequeLoan(String fromDate, String toDate, String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(PgmisChequeLoantbl.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("chequedate").gt(fromDate)).or(Condition.prop("chequedate").eq(fromDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+            //only to date present
+            return Select.from(PgmisChequeLoantbl.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("chequedate").lt(toDate)).or(Condition.prop("chequedate").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(PgmisChequeLoantbl.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("chequedate").gt(fromDate),Condition.prop("chequedate").lt(toDate))
+                    .or(Condition.prop("chequedate").eq(fromDate)).or(Condition.prop("chequedate").eq(toDate))
+                    .list();
+        }
+    }
+
+    //  ===================get payment details (PgPaymentTranstbl) ======
+    public List<PgPaymentTranstbl> getPgPaymentTransList(String fromDate,String toDate,String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(PgPaymentTranstbl.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("date").gt(fromDate)).or(Condition.prop("date").eq(fromDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+            //only to date present
+            return Select.from(PgPaymentTranstbl.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("date").lt(toDate)).or(Condition.prop("date").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(PgPaymentTranstbl.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("date").gt(fromDate),Condition.prop("date").lt(toDate))
+                    .or(Condition.prop("date").eq(fromDate)).or(Condition.prop("date").eq(toDate))
+                    .list();
+        }
+    }
+
+    //================== get data from PgCapitalSavetbl ===========
+    public List<Pgcapitalsavetbl> getPgCapitalSavetblList(String fromDate, String toDate, String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(Pgcapitalsavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("Paymentdate").gt(fromDate))
+                    .or(Condition.prop("Paymentdate")
+                            .eq(fromDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+            //only to date present
+            return Select.from(Pgcapitalsavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("Paymentdate").lt(toDate))
+                    .or(Condition.prop("Paymentdate").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(Pgcapitalsavetbl.class)
+                    .where(Condition.prop("Pgcode").eq(pgcode))
+                    .where(Condition.prop("Paymentdate").gt(fromDate),
+                            Condition.prop("Paymentdate").lt(toDate))
+                    .or(Condition.prop("Paymentdate").eq(fromDate))
+                    .or(Condition.prop("Paymentdate").eq(toDate))
+                    .list();
+        }
+    }
+
+    //================== get data from  PgReceiptDisData  for disbursment amount   ===========
+    public List<PgReceiptDisData> getReceiptDisbursment(String fromDate, String toDate, String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(PgReceiptDisData.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("approveddate").gt(fromDate))
+                    .or(Condition.prop("approveddate")
+                            .eq(fromDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+            //only to date present
+            return Select.from(PgReceiptDisData.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("approveddate").lt(toDate))
+                    .or(Condition.prop("approveddate").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(PgReceiptDisData.class)
+                    .where(Condition.prop("pgcode").eq(pgcode))
+                    .where(Condition.prop("approveddate").gt(fromDate),
+                            Condition.prop("approveddate").lt(toDate))
+                    .or(Condition.prop("approveddate").eq(fromDate))
+                    .or(Condition.prop("approveddate").eq(toDate))
+                    .list();
+        }
+    }
+
+    //================== get data from  PgBankwithdrawcashdeposit amount   ===========
+    public List<PgBankwithdrawcashdeposit> getPgBankwithdrawcashdeposits(String fromDate, String toDate, String pgcode){
+        if(!fromDate.equals("Select Date") && toDate.equals("Select Date")){
+            //only from date present
+            return Select.from(PgBankwithdrawcashdeposit.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("Date").gt(fromDate))
+                    .or(Condition.prop("Date")
+                            .eq(fromDate))
+                    .list();
+        }else if(fromDate.equals("Select Date") && !toDate.equals("Select Date")){
+            //only to date present
+            return Select.from(PgBankwithdrawcashdeposit.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("Date").lt(toDate))
+                    .or(Condition.prop("Date").eq(toDate))
+                    .list();
+        }else{
+            //both date prsent
+            return Select.from(PgBankwithdrawcashdeposit.class)
+                    .where(Condition.prop("PG_Code").eq(pgcode))
+                    .where(Condition.prop("Date").gt(fromDate),
+                            Condition.prop("Date").lt(toDate))
+                    .or(Condition.prop("Date").eq(fromDate))
+                    .or(Condition.prop("Date").eq(toDate))
+                    .list();
+        }
+    }
+
     private boolean validation() {
         boolean result;
         String dateFrom = textView82.getText().toString();
         String dateTo = textView84.getText().toString();
         if (dateFrom.equals("Select Date") && dateTo.equals("Select Date")) {
             result = false;
-            presenter.selectAtLeastOneCalender();
+
+            //  presenter.selectAtLeastOneCalender();
+            new SweetAlertDialog(PgPaymentReceiptReportActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Select at least One date")
+                    .setContentText("No data found")
+                    .setConfirmText("Exit")
+                    .showCancelButton(true)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.cancel();
+                        }
+                    })
+                    .show();
         } else {
             result = true;
         }
@@ -318,21 +490,15 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
         String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
         String newDay = dayOfMonth + "";
         String newMonth = (monthOfYear + 1) + "";
-
         if ((monthOfYear + 1) < 10) {
             newMonth = "0" + newMonth;
         }
-
         if (dayOfMonth < 10) {
             newDay = "0" + dayOfMonth;
         }
-
         String newDate = year + "/" + newMonth + "/" + newDay;
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-        String currentDate = new SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(new Date());
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         Date date1 = null, date2 = null;
         try {
             date1 = sdf.parse(date);
@@ -345,7 +511,6 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
             Toast.makeText(PgPaymentReceiptReportActivity.this, "Please Select Valid Date", Toast.LENGTH_LONG).show();
         } else {
             if (view.getTag().equals("from")) {
-
                 //condition to check from date from date should be less than to date
                 if (textView84.getText().toString().equals("Select Date")) {
                     textView82.setText(newDate);
@@ -357,11 +522,8 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
                     } else {
                         Toast.makeText(PgPaymentReceiptReportActivity.this, "From Date Can't be Greater than To Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
-
             } else {
-
                 //condition to check from date to date should be greater than from date
                 if (textView82.getText().toString().equals("Select Date")) {
                     textView84.setText(newDate);
@@ -373,10 +535,8 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
                     } else {
                         Toast.makeText(PgPaymentReceiptReportActivity.this, "To Date Can't be less than From Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
-
         }
     }
 
@@ -390,11 +550,9 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
         if (pgPaymentTranstblList.size() > 0) {
             for (int i = 0; i < pgPaymentTranstblList.size(); i++) {
                 ReceiptReportModel item = new ReceiptReportModel();
+                // item.setDate(parseDate(pgPaymentTranstblList.get(i).getDate()));
+                item.setDate(pgPaymentTranstblList.get(i).getDate());
 
-                //date corvert
-//                String strDate = pgPaymentTranstblList.get(i).getDate();
-//                item.setDate(parseDate(strDate));
-                item.setDate(parseDate(pgPaymentTranstblList.get(i).getDate()));
                 item.setHeadname(pgPaymentTranstblList.get(i).getHeadname());
                 item.setPaymentamount(pgPaymentTranstblList.get(i).getAmount());
                 item.setPaymentmode(pgPaymentTranstblList.get(i).getPaymentmode());
@@ -405,76 +563,251 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
         }
 
         //=================== get received details ( pgReceiptTranstbl table ) ======
+        if (pgReceiptDisData.size() > 0) {
+            for (int i = 0; i < pgReceiptDisData.size(); i++) {
+                ReceiptReportModel item = new ReceiptReportModel();
+                //  item.setDate(parseDate(pgReceiptDisData.get(i).getApproveddate()));
+                item.setDate(pgReceiptDisData.get(i).getApproveddate());
+
+                item.setHeadname(pgReceiptDisData.get(i).getBudgethead());
+                item.setReceivedamount(pgReceiptDisData.get(i).getEkoshamount());
+                item.setPaymentmode("Bank");
+
+                //payment mode not added table that's why it has added as temporary
+                finalReportList.add(item);
+                totalRecived = totalRecived + Double.valueOf(pgReceiptDisData.get(i).getEkoshamount());
+            }
+        }
+
+        //=================== get received details ( pgReceiptTranstbl table ) ======
         if (pgReceiptTranstblList.size() > 0) {
             for (int i = 0; i < pgReceiptTranstblList.size(); i++) {
                 ReceiptReportModel item = new ReceiptReportModel();
+                //item.setDate(parseDate(pgReceiptTranstblList.get(i).getDate()));
                 item.setDate(pgReceiptTranstblList.get(i).getDate());
                 item.setHeadname(pgReceiptTranstblList.get(i).getHeadname());
                 item.setReceivedamount(pgReceiptTranstblList.get(i).getAmount());
-                item.setPaymentmode(" "); //payment mode not added table that's why it has added as temporary
+                item.setPaymentmode(pgReceiptTranstblList.get(i).getPaymentmode());
+
+                //payment mode not added table that's why it has added as temporary
                 finalReportList.add(item);
                 totalRecived = totalRecived + Double.valueOf(pgReceiptTranstblList.get(i).getAmount());
             }
         }
+
         //================================ itempurchasedbypgtblList ====================
         if (itempurchasedbypgtblList.size() > 0) {
             for (int i = 0; i < itempurchasedbypgtblList.size(); i++) {
                 ReceiptReportModel item = new ReceiptReportModel();
-                item.setDate(itempurchasedbypgtblList.get(i).getEntrydate());
-                String ItemHead = itempurchasedbypgtblList.get(i).getItemname(); // + " Puarchase";
+                // item.setDate(parseDate(itempurchasedbypgtblList.get(i).getSelecteddate()));
+                item.setDate(itempurchasedbypgtblList.get(i).getSelecteddate());
+
+                String ItemHead = itempurchasedbypgtblList.get(i).getBudgetname(); // + " Puarchase";
                 item.setHeadname(ItemHead);
                 Double amount = Double.valueOf(itempurchasedbypgtblList.get(i).getRate()) * Double.valueOf(itempurchasedbypgtblList.get(i).getQuantity()) ;
-                totalRecived = totalRecived + amount;
-                item.setReceivedamount(String.valueOf(amount));
+                item.setPaymentamount(String.valueOf(amount));
                 item.setPaymentmode(itempurchasedbypgtblList.get(i).getPaymentmode());
                 finalReportList.add(item);
+                totalPayment = totalPayment + amount;
             }
         }
 
-        //=================== get share capital details ( pgReceiptTranstbl table ) ======
-        if (pgMemCapitalList.size() > 0) {
-            for (int i = 0; i < pgMemCapitalList.size(); i++) {
+        //////////////////////////////////////////////////////////////////////////////////
+        try {
+            if (pgMemCapitalList.size() > 0) {
+                for (int i = 0; i < pgMemCapitalList.size(); i++) {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    //   item.setDate(parseDate(pgMemCapitalList.get(i).getPaymentdate()));
+                    item.setDate(pgMemCapitalList.get(i).getPaymentdate());
+
+                    item.setHeadname("Share Capital");
+                    item.setReceivedamount(pgMemCapitalList.get(i).getAmount());
+                    item.setPaymentmode(pgMemCapitalList.get(i).getPaymentmode());
+
+                    //payment mode not added table that's why it has added as temporary
+                    finalReportList.add(item);
+                    totalRecived = totalRecived + Double.valueOf(pgMemCapitalList.get(i).getAmount());
+                }
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+        try {
+            if (pgMemShipFeeList.size() > 0) {
+                for (int i = 0; i < pgMemShipFeeList.size(); i++) {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    //item.setDate(parseDate(pgMemShipFeeList.get(i).getPaymentdate()));
+                    item.setDate(pgMemShipFeeList.get(i).getPaymentdate());
+
+                    item.setHeadname("Membership Fee");
+                    item.setReceivedamount(pgMemShipFeeList.get(i).getAmount());
+                    item.setPaymentmode(pgMemShipFeeList.get(i).getPaymentmode());
+
+                    //payment mode not added table that's why it has added as temporary
+                    finalReportList.add(item);
+                    totalRecived = totalRecived + Double.valueOf(pgMemShipFeeList.get(i).getAmount());
+                }
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        //        //================== Bank Table=====================
+        if (pgBankwithdrawcashdeposits.size() > 0) {
+            for (int i = 0; i < pgBankwithdrawcashdeposits.size(); i++) {
+                if (pgBankwithdrawcashdeposits.get(i).getHeadname().equals("बैंक से नगद निकासी")) {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    item.setDate(pgBankwithdrawcashdeposits.get(i).getDate());
+
+                    item.setHeadname(pgBankwithdrawcashdeposits.get(i).getHeadname());
+                    item.setPaymentmode("Cash");
+                    Double amount = Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+                    item.setReceivedamount(String.valueOf(amount));
+
+                    finalReportList.add(item);
+                    totalRecived = totalRecived + Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+
+                    ReceiptReportModel item2 = new ReceiptReportModel();
+                    item2.setDate(pgBankwithdrawcashdeposits.get(i).getDate());
+
+                    item2.setHeadname(pgBankwithdrawcashdeposits.get(i).getHeadname());
+                    Double amount2 = Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+                    item2.setPaymentamount(String.valueOf(amount2));
+
+                    item2.setPaymentmode("Bank");
+                    finalReportList.add(item2);
+
+                    totalPayment = totalPayment + amount2;
+                }
+                else {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    item.setDate(pgBankwithdrawcashdeposits.get(i).getDate());
+
+                    item.setHeadname(pgBankwithdrawcashdeposits.get(i).getHeadname());
+                    item.setPaymentmode("Bank");
+                    Double amount = Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+                    item.setReceivedamount(String.valueOf(amount));
+
+                    finalReportList.add(item);
+                    totalRecived = totalRecived + Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+
+                    ReceiptReportModel item2 = new ReceiptReportModel();
+                    item2.setDate(pgBankwithdrawcashdeposits.get(i).getDate());
+
+                    item2.setHeadname(pgBankwithdrawcashdeposits.get(i).getHeadname());
+                    Double amount2 = Double.valueOf(pgBankwithdrawcashdeposits.get(i).getAmount());
+                    item2.setPaymentamount(String.valueOf(amount2));
+
+                    item2.setPaymentmode("Cash");
+                    finalReportList.add(item2);
+
+                    totalPayment = totalPayment + amount2;
+                }
+            }
+        }
+
+        //================== loan payment=====================
+        if (pgmisLoanrepaymentList.size() > 0) {
+            for (int i = 0; i < pgmisLoanrepaymentList.size(); i++) {
                 ReceiptReportModel item = new ReceiptReportModel();
-                item.setDate(pgMemCapitalList.get(i).getPayment_date());
-                item.setHeadname("Share Capital");
-                item.setReceivedamount(pgMemCapitalList.get(i).getAmount());
-                item.setPaymentmode(pgMemCapitalList.get(i).getPayment_mode());
+                item.setDate(pgmisLoanrepaymentList.get(i).getEntrydate());
+                item.setHeadname("Advance to member");
+                item.setPaymentmode(pgmisLoanrepaymentList.get(i).getSelectedPaymentMode());
+                Double amount = Double.valueOf(pgmisLoanrepaymentList.get(i).getAmount()) ;
+                item.setReceivedamount(String.valueOf(amount));
+
                 finalReportList.add(item);
-                totalRecived = totalRecived + Double.valueOf(pgMemCapitalList.get(i).getAmount());
+                totalRecived = totalRecived  + Double.valueOf(pgmisLoanrepaymentList.get(i).getAmount());
             }
         }
-        //=================== get member fee registration details ( pgReceiptTranstbl table ) ======
-        if (pgMemShipFeeList.size() > 0) {
-            for (int i = 0; i < pgMemShipFeeList.size(); i++) {
+
+        //========= loan and sale
+        if (pgmisBatchLoantblList.size() > 0) {
+            for (int i = 0; i < pgmisBatchLoantblList.size(); i++) {
                 ReceiptReportModel item = new ReceiptReportModel();
-                item.setDate(pgMemCapitalList.get(i).getPayment_date());
-                item.setHeadname("Member Register");
-                item.setReceivedamount(pgMemCapitalList.get(i).getAmount());
-                item.setPaymentmode(pgMemCapitalList.get(i).getPayment_mode());
+                item.setDate(pgmisBatchLoantblList.get(i).getEntrydate());
+                item.setHeadname("Advance to member");
+                Double amount = Double.valueOf(pgmisBatchLoantblList.get(i).getAmount()) ;
+                item.setPaymentamount(String.valueOf(amount));
+
+                item.setPaymentmode("Adjustment");
                 finalReportList.add(item);
-                totalRecived = totalRecived + Double.valueOf(pgMemShipFeeList.get(i).getAmount());
+
+                totalPayment = totalPayment  + amount;
             }
         }
-        // loan table
+        //========= loan and sale
+        if (pgmisBatchLoantblList.size() > 0) {
+            for (int i = 0; i < pgmisBatchLoantblList.size(); i++) {
+                ReceiptReportModel item = new ReceiptReportModel();
+                item.setDate(pgmisBatchLoantblList.get(i).getEntrydate());
+                item.setHeadname("Revolving fund");
+                Double amount = Double.valueOf(pgmisBatchLoantblList.get(i).getAmount());
+                item.setReceivedamount(String.valueOf(amount));
 
+                item.setPaymentmode("Adjustment");
+                finalReportList.add(item);
 
+                totalRecived = totalRecived + amount;
+            }
 
+            ///////////////////////////////////////////////////ChequeLoan//////////////////////////////////////////
+            if (pgmisChequeLoantbls.size() > 0) {
+                for (int i = 0; i < pgmisChequeLoantbls.size(); i++) {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    item.setDate(pgmisChequeLoantbls.get(i).getChequedate());
+                    item.setHeadname("चेक  भुगतान");
+                    Double amount = Double.valueOf(pgmisChequeLoantbls.get(i).getAmount());
+                    item.setPaymentamount(String.valueOf(amount));
 
-        //================ update total amount =============
-        totalPaymentAmt.setText(String.valueOf(totalPayment));
-        totalReceivedAmt.setText(String.valueOf(totalRecived));
+                    item.setPaymentmode("Bank");
+                    finalReportList.add(item);
+
+                    totalPayment = totalPayment + amount;
+                }
+            }
+
+            //========= Cheque Loan======================================//
+            if (pgmisChequeLoantbls.size() > 0) {
+                for (int i = 0; i < pgmisChequeLoantbls.size(); i++) {
+                    ReceiptReportModel item = new ReceiptReportModel();
+                    item.setDate(pgmisChequeLoantbls.get(i).getChequedate());
+                    item.setHeadname("चेक  भुगतान");
+                    Double amount = Double.valueOf(pgmisChequeLoantbls.get(i).getAmount());
+                    item.setReceivedamount(String.valueOf(amount));
+
+                    item.setPaymentmode("Adjustment");
+                    finalReportList.add(item);
+
+                    totalRecived = totalRecived + amount;
+                }
+            }
+        }
+        try {
+            BigDecimal bd = new BigDecimal(totalRecived).setScale(2, RoundingMode.HALF_UP);
+            double Recived = bd.doubleValue();
+
+            BigDecimal bd2 = new BigDecimal(totalPayment).setScale(2, RoundingMode.HALF_UP);
+            double Payment = bd2.doubleValue();
+
+            //================ update total amount =============
+            totalPaymentAmt.setText(String.valueOf(totalPayment));
+            totalReceivedAmt.setText(String.valueOf(totalRecived));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         //=========== sort the array date =====
+        Collections.sort(finalReportList,this::compare);
         //=========== update on recycler ===========
-
         aAdapter = new PgReceiptReportAdapter(this, finalReportList);
         LinearLayoutManager verticalLayoutmanager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerList.setLayoutManager(verticalLayoutmanager);
         recylerList.setAdapter(aAdapter);
-
         generatePdfReport();//============ adding this for generate pdf file
-
         System.out.println("");
 
     }
@@ -482,32 +815,29 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
     //=========== change date formate ========
     public static String parseDate(String inputDateString) {
 
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        SimpleDateFormat inputDateFormat2 = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        SimpleDateFormat  outputDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+        //  SimpleDateFormat inputDateFormat2 = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+        SimpleDateFormat inputDateFormat  = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         Date date = null;
         String outputDateString = null;
         try {
-            date = inputDateFormat.parse(inputDateString);
-            outputDateString = outputDateFormat.format(date);
-        } catch (ParseException f) {
             try {
-                date = inputDateFormat2.parse(inputDateString);
+                date = inputDateFormat.parse(inputDateString);
                 outputDateString = outputDateFormat.format(date);
-            } catch (ParseException e) {
+            }catch (NullPointerException e){
                 e.printStackTrace();
             }
+        } catch (ParseException f) {
+            f.printStackTrace();
         }
         return outputDateString;
+        //return inputDateString; //this is for testing ====
     }
 
-//============= generate pdf
-
+    //============= generate pdf
     public void generatePdfReport(){
-
         pdfGenerateDataList = new ArrayList<>();
-
         ReceiptReportModel header = new ReceiptReportModel();
         header.setHeadname("Head");
         header.setReceivedamount("Received Amount");
@@ -517,15 +847,29 @@ public class PgPaymentReceiptReportActivity extends AppCompatActivity implements
         pdfGenerateDataList.add(header);
 
         pdfGenerateDataList.addAll(finalReportList);
-
         ReceiptReportModel Footer = new ReceiptReportModel();
         Footer.setHeadname("Total");
-        Footer.setReceivedamount(String.valueOf(totalRecived));
-        Footer.setPaymentamount(String.valueOf(totalPayment));
-        Footer.setDate("");
-        Footer.setPaymentmode("");
-        pdfGenerateDataList.add(Footer);
 
+        try {
+            BigDecimal bd = new BigDecimal(totalRecived).setScale(2, RoundingMode.HALF_UP);
+            double Recived = bd.doubleValue();
+
+            BigDecimal bd2 = new BigDecimal(totalPayment).setScale(2, RoundingMode.HALF_UP);
+            double Payment = bd2.doubleValue();
+
+            Footer.setReceivedamount(String.valueOf(totalRecived));
+            Footer.setPaymentamount(String.valueOf(totalPayment));
+            Footer.setDate("");
+            Footer.setPaymentmode("");
+            pdfGenerateDataList.add(Footer);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
-
+    //============ sorting funtion
+    public int compare(ReceiptReportModel a, ReceiptReportModel b)
+    {
+        return a.sortDateReference - b.sortDateReference;
+    }
 }
+

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,12 +13,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
@@ -58,9 +60,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class PgPaymentReceiptReport extends AppCompatActivity implements PaymentReceiptReport,
-        DatePickerDialog.OnDateSetListener {
+public class PgPaymentReceiptReport extends AppCompatActivity implements PaymentReceiptReport, DatePickerDialog.OnDateSetListener {
+
     String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
     };
@@ -133,6 +136,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     ImageView imageView21;
     @BindView(R.id.imageView22)
     ImageView pdf;
+
     //Class Globals
     PaymentReceiptReportPresenter presenter;
     List<PgReceiptDisData> receiptDisDataList;
@@ -140,6 +144,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     boolean isMatched;
     boolean isMatched1;
     boolean isMatched2;
+
     List<PgPaymentTranstbl> pgPaymentTranstblList;
     List<PgPaymentTranstbl> pgPaymentTranstblListSum;
     List<PaymentReceiptReportModel> paymentReceiptReportModelList = new ArrayList<>();
@@ -152,6 +157,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pg_payment_receipt_report);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         init();
@@ -162,7 +168,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
         presenter = new PaymentReceiptReportPresenter(new PaymentReceiptRepotInteractor(), this);
         presenter.setPgName();
         receiptDisDataList = presenter.getReceiptAmountData(PgActivity.pgCodeSelected);
-
         //adding amount for same budgetid for receiptDisDataList
         addAmountreceiptDisDataList();
     }
@@ -174,16 +179,18 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                 isMatched = false;
                 ReceiptAmountSumModel item = new ReceiptAmountSumModel();
                 item.setBudgetid(receiptDisDataList.get(i).getBudgetid());
+                item.setBMID(receiptDisDataList.get(i).getBMID());
                 item.setAmount(receiptDisDataList.get(i).getEkoshamount());
                 item.setHeadname(receiptDisDataList.get(i).getBudgethead());
+                item.setBMID(receiptDisDataList.get(i).getBMID());
                 if (receiptAmountSumModelList.size() == 0) {
                     //for size zero
                     receiptAmountSumModelList.add(item);
                 } else {
                     for (int j = 0; j < receiptAmountSumModelList.size(); j++) {
-                        String budgetid = receiptAmountSumModelList.get(j).getBudgetid();
+                        String budgetid = receiptAmountSumModelList.get(j).getBMID();
                         String amount = receiptAmountSumModelList.get(j).getAmount();
-                        if (budgetid.equals(receiptDisDataList.get(i).getBudgetid())) {
+                        if (budgetid.equals(receiptDisDataList.get(i).getBMID())) {
                             double newAmount = Double.parseDouble(amount) + Double.parseDouble(receiptDisDataList.get(i).getEkoshamount());
                             item.setAmount(newAmount + "");
                             receiptAmountSumModelList.set(j, item);
@@ -201,6 +208,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     }
 
     @OnClick({R.id.imageView19, R.id.imageView20, R.id.button5,R.id.imageView21,R.id.imageView22})
+
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imageView19:
@@ -213,31 +221,36 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                 boolean result = validation();
                 if (result) {
                     pgPaymentTranstblList = presenter.getListPaymentTranstableDateWise(textView82.getText().toString(), textView84.getText().toString(), PgActivity.pgCodeSelected);
-                    //sum paymentamount for same budgetid
                     sumAmountPgpaymentTrans();
                     presenter.getReport();
                     System.out.println("");
+                }else {
+                        new SweetAlertDialog(PgPaymentReceiptReport.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Select at least One date")
+                                .setContentText("No data found")
+                                .setConfirmText("Exit")
+                                .showCancelButton(true)
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.cancel();
+                                    }
+                                })
+                                .show();
                 }
                 break;
             case R.id.imageView21:
                 presenter.clearDates();
                 break;
-
-            case R.id.imageView22:
+                case R.id.imageView22:
                 String dateFrom = textView82.getText().toString();
                 String dateTo = textView84.getText().toString();
                 if ((dateFrom.equals("Select Date") && dateTo.equals("Select Date"))||pdfGenerateList.size()==0) {
                     Toast.makeText(PgPaymentReceiptReport.this,"Please see report first",Toast.LENGTH_SHORT).show();
-
-
                 }else{
-
                     if (!hasPermissions(PgPaymentReceiptReport.this, PERMISSIONS)) {
-                        ActivityCompat
-                                .requestPermissions(this, PERMISSIONS, 1);
-
+                        ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
                     }else{
-                        //generate pdf here
                         Intent intent = new Intent(this,GeneratePdfActivity.class);
                         intent.putExtra("from",dateFrom);
                         intent.putExtra("to",dateTo);
@@ -249,7 +262,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && context != null && permissions != null) {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -267,6 +280,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                 isMatched1 = false;
                 PgPaymentTranstbl item = new PgPaymentTranstbl();
                 item.setBudgetcode(pgPaymentTranstblList.get(i).getBudgetcode());
+                item.setBMID(pgPaymentTranstblList.get(i).getBMID());
                 item.setAmount(pgPaymentTranstblList.get(i).getAmount());
                 item.setHeadname(pgPaymentTranstblList.get(i).getHeadname());
                 if (pgPaymentTranstblListSum.size() == 0) {
@@ -274,23 +288,33 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                     pgPaymentTranstblListSum.add(item);
                 } else {
                     for (int j = 0; j < pgPaymentTranstblListSum.size(); j++) {
-                        String budgetid = pgPaymentTranstblListSum.get(j).getBudgetcode();
+                        String budgetid = pgPaymentTranstblListSum.get(j).getBMID();
+                        String budgetids = pgPaymentTranstblListSum.get(j).getBudgetcode();
                         String amount = pgPaymentTranstblListSum.get(j).getAmount();
-                        if (budgetid.equals(pgPaymentTranstblList.get(i).getBudgetcode())) {
-                            double newAmount = Double.parseDouble(amount) + Double.parseDouble(pgPaymentTranstblList.get(i).getAmount());
-                            item.setAmount(newAmount + "");
-                            pgPaymentTranstblListSum.set(j, item);
-                            isMatched1 = true;
-                            //since matched terminate internal loop
-                            j = pgPaymentTranstblListSum.size();
+                        try {
+                            if (budgetid.equals(pgPaymentTranstblList.get(i).getBMID())) {
+                                double newAmount = Double.parseDouble(amount) + Double.parseDouble(pgPaymentTranstblList.get(i).getAmount());
+                                item.setAmount(newAmount + "");
+                                pgPaymentTranstblListSum.set(j, item);
+                                isMatched1 = true;
+                                //since matched terminate internal loop
+                                j = pgPaymentTranstblListSum.size();
+                            }
+                        } catch (NullPointerException e) {
+                            if (budgetids.equals(pgPaymentTranstblList.get(i).getBudgetcode())) {
+                                double newAmount = Double.parseDouble(amount) + Double.parseDouble(pgPaymentTranstblList.get(i).getAmount());
+                                item.setAmount(newAmount + "");
+                                pgPaymentTranstblListSum.set(j, item);
+                                isMatched1 = true;
+                                //since matched terminate internal loop
+                                j = pgPaymentTranstblListSum.size();
+                            }
                         }
                     }
-                    //
                     if (!isMatched1) {
                         pgPaymentTranstblListSum.add(item);
                     }
                 }
-
             }
         }
     }
@@ -341,7 +365,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
     public void getReport() {
         paymentReceiptReportModelList = new ArrayList<>();
         pdfGenerateList = new ArrayList<>();
-
         //adding first model to report list for pdf heading display
         PaymentReceiptReportModel model0 = new PaymentReceiptReportModel();
         model0.setHeadname("Head");
@@ -354,6 +377,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
         double receivedAmounttotal = 0;
         double paymentAmounttotal = 0;
         double balanceAmounttotal = 0;
+
         for (int i = 0; i < receiptAmountSumModelList.size(); i++) {
             isMatched2 = false;
             String budgetid = receiptAmountSumModelList.get(i).getBudgetid();
@@ -372,7 +396,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                     paymentAmounttotal = paymentAmounttotal + Double.parseDouble(pgPaymentTranstblListSum.get(j).getAmount());
                     balanceAmounttotal = balanceAmounttotal + balance;
 
-
                     model.setBalance(balance + "");
                     paymentReceiptReportModelList.add(model);
                     pdfGenerateList.add(model);
@@ -390,11 +413,8 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                 receivedAmounttotal = receivedAmounttotal + Double.parseDouble(amount);
                 balanceAmounttotal = balanceAmounttotal + Double.parseDouble(amount);
                 paymentReceiptReportModelListNotMatched.add(model);
-
             }
-
         }
-
 
         paymentReceiptReportModelList.addAll(paymentReceiptReportModelListNotMatched);
         pdfGenerateList.addAll(paymentReceiptReportModelListNotMatched);
@@ -404,7 +424,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
         for(int a=0;a<paymentReceiptReportModelList.size();a++){
             budgetidreportfinallist.add(paymentReceiptReportModelList.get(a).getBudgetid());
         }
-
 
         for(int k=0;k<pgPaymentTranstblListSum.size();k++){
             String budgetid = pgPaymentTranstblListSum.get(k).getBudgetcode();
@@ -421,19 +440,15 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                  paymentReceiptReportModelList.add(model);
                  pdfGenerateList.add(model);
              }
-
         }
 
-
         //adding last model as total to report list for pdf
-
         PaymentReceiptReportModel model = new PaymentReceiptReportModel();
         model.setHeadname("Total");
         model.setReceivedamount(receivedAmounttotal+"");
         model.setPaymentamount(paymentAmounttotal+"");
         model.setBalance(balanceAmounttotal+"");
         pdfGenerateList.add(model);
-
 
         aAdapter = new PgPaymentReceiptReportAdapter(this, paymentReceiptReportModelList);
         LinearLayoutManager verticalLayoutmanager
@@ -445,10 +460,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
         textView777.setText(receivedAmounttotal + "");
         textView788.setText(paymentAmounttotal + "");
         textView799.setText(balanceAmounttotal + "");
-
-
     }
-
 
     public void generatePDF(RecyclerView view,String fromdate,String todate) {
         RecyclerView.Adapter adapter = view.getAdapter();
@@ -457,7 +469,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
             int size = adapter.getItemCount();
             int height = 0;
             final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
             // Use 1/8th of the available memory for this memory cache.
             final int cacheSize = maxMemory / 8;
             LruCache<String, Bitmap> bitmaCache = new LruCache<>(cacheSize);
@@ -471,10 +482,8 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                 holder.itemView.buildDrawingCache();
                 Bitmap drawingCache = holder.itemView.getDrawingCache();
                 if (drawingCache != null) {
-
                     bitmaCache.put(String.valueOf(i), drawingCache);
                 }
-
                 height += holder.itemView.getMeasuredHeight();
             }
 
@@ -496,19 +505,15 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
             try {
                 PdfWriter.getInstance(document, fOut);
             } catch (DocumentException e) {
                 e.printStackTrace();
             }
-            //
-
             Font paraFont= new Font(Font.FontFamily.TIMES_ROMAN,20,Font.BOLD);
             Paragraph p1 = new Paragraph(fromdate+"-"+todate,paraFont);
             p1.setAlignment(Paragraph.ALIGN_CENTER);
             p1.breakUp();
-
             if (!document.isOpen()) {
                 document.open();
             }
@@ -517,9 +522,7 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
             } catch (DocumentException e) {
                 e.printStackTrace();
             }
-
             for (int i = 0; i < size; i++) {
-
                 try {
                     //Adding the content to the document
                     Bitmap bmp = bitmaCache.get(String.valueOf(i));
@@ -529,19 +532,16 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                     float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
                             - document.rightMargin() - 0) / image.getWidth()) * 100; // 0 means you have no indentation. If you have any, change it.
                     image.scalePercent(scaler);
-                    image.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER | com.itextpdf.text.Image.ALIGN_TOP);
+                    image.setAlignment(Image.ALIGN_CENTER | Image.ALIGN_TOP);
 
                     if (!document.isOpen()) {
                         document.open();
                     }
-
                     document.add(image);
-
                 } catch (Exception ex) {
 
                 }
             }
-
             if (document.isOpen()) {
                 document.close();
             }
@@ -549,7 +549,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(PgPaymentReceiptReport.this);
                     builder.setTitle("Success")
                             .setMessage("PDF File Generated Successfully.")
@@ -580,19 +579,17 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
         String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
         String newDay = dayOfMonth + "";
         String newMonth = (monthOfYear + 1) + "";
-
-
         if ((monthOfYear + 1) < 10) {
             newMonth = "0" + newMonth;
         }
-
         if (dayOfMonth < 10) {
             newDay = "0" + dayOfMonth;
         }
-
         String newDate = year + "/" + newMonth + "/" + newDay;
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-        String currentDate = new SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(new Date());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+
 
         Date date1 = null, date2 = null;
         try {
@@ -606,7 +603,6 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
             Toast.makeText(PgPaymentReceiptReport.this, "Please Select Valid Date", Toast.LENGTH_LONG).show();
         } else {
             if (view.getTag().equals("from")) {
-
                 //condition to check from date from date should be less than to date
                 if (textView84.getText().toString().equals("Select Date")) {
                     textView82.setText(newDate);
@@ -618,11 +614,8 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                     } else {
                         Toast.makeText(PgPaymentReceiptReport.this, "From Date Can't be Greater than To Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
-
             } else {
-
                 //condition to check from date to date should be greater than from date
                 if (textView82.getText().toString().equals("Select Date")) {
                     textView84.setText(newDate);
@@ -634,10 +627,8 @@ public class PgPaymentReceiptReport extends AppCompatActivity implements Payment
                     } else {
                         Toast.makeText(PgPaymentReceiptReport.this, "To Date Can't be less than From Date", Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
-
         }
     }
 }

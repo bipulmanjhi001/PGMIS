@@ -3,24 +3,31 @@ package com.jslps.pgmisnew.database;
 import com.orm.SugarRecord;
 
 public class MembershipFeeModel extends SugarRecord {
+
     private String Pgcode;
     private String Pgmemcode;
     private String Grpcode;
     private String Adapterposition;
     private String Amount;
     private String Updateamount;
+    private String paymentmode;
+    private String paymentdate;
 
-    public String getPayment_mode() {
-        return payment_mode;
+    public String getPaymentmode() {
+        return paymentmode;
     }
 
-    public void setPayment_mode(String payment_mode) {
-        this.payment_mode = payment_mode;
+    public void setPaymentmode(String paymentmode) {
+        this.paymentmode = paymentmode;
     }
 
-    private String payment_mode;
+    public String getPaymentdate() {
+        return paymentdate;
+    }
 
-
+    public void setPaymentdate(String paymentdate) {
+        this.paymentdate = paymentdate;
+    }
 
     public String getUpdateamount() {
         return Updateamount;

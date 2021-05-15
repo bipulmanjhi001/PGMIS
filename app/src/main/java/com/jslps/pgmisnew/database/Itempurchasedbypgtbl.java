@@ -1,11 +1,11 @@
 package com.jslps.pgmisnew.database;
 
-import android.support.annotation.NonNull;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Unique;
 
 public class Itempurchasedbypgtbl extends SugarRecord {
+
     @Unique
     private String uuid;
     private String itemcode;
@@ -20,12 +20,13 @@ public class Itempurchasedbypgtbl extends SugarRecord {
     private String isexported;
     private String paymentmode;
     private String selecteddate;
-
+    private String BMID;
 
     public Itempurchasedbypgtbl() {
+
     }
 
-    public Itempurchasedbypgtbl(String uuid, String itemcode, String itemname, String unit, String rate, String quantity, String budgetname, String budgetcode, String pgcode, String entrydate, String isexported, String paymentmode, String selected_date) {
+    public Itempurchasedbypgtbl(String uuid, String itemcode, String itemname, String unit, String rate, String quantity, String budgetname, String budgetcode, String pgcode, String entrydate, String isexported, String paymentmode, String selecteddate, String BMID) {
         this.uuid = uuid;
         this.itemcode = itemcode;
         this.itemname = itemname;
@@ -38,7 +39,8 @@ public class Itempurchasedbypgtbl extends SugarRecord {
         this.entrydate = entrydate;
         this.isexported = isexported;
         this.paymentmode = paymentmode;
-        this.selecteddate = selected_date;
+        this.selecteddate = selecteddate;
+        this.BMID = BMID;
     }
 
     public String getUuid() {
@@ -141,9 +143,18 @@ public class Itempurchasedbypgtbl extends SugarRecord {
         return selecteddate;
     }
 
-    public void setSelecteddate(String selected_date) {
-        this.selecteddate = selected_date;
+    public void setSelecteddate(String selecteddate) {
+        this.selecteddate = selecteddate;
     }
+
+    public String getBMID() {
+        return BMID;
+    }
+
+    public void setBMID(String BMID) {
+        this.BMID = BMID;
+    }
+
 
     @Override
     public String toString() {

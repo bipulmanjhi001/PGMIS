@@ -1,15 +1,14 @@
 package com.jslps.pgmisnew;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.jslps.pgmisnew.adapter.PgPaymentAdapter;
 import com.jslps.pgmisnew.database.PgPaymentTranstbl;
 import com.jslps.pgmisnew.database.TblMstPgPaymentReceipthead;
@@ -66,6 +67,7 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
     ConstraintLayout constraintLayout2;
     @BindView(R.id.button4)
     Button button4;
+
     @BindView(R.id.parentContainer)
     ConstraintLayout parentContainer;
     @BindView(R.id.et_enter_amount)
@@ -77,7 +79,7 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
     @BindView(R.id.spinner3)
     Spinner spinner3;
     @BindView(R.id.quantity)
-     TextInputEditText quantity;
+    TextInputEditText quantity;
     @BindView(R.id.spinner_units)
     Spinner spinner_unit;
 
@@ -86,7 +88,7 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
     List<TblMstPgPaymentReceipthead> pgPaymentHeadModelList;
     public ArrayAdapter<TblMstPgPaymentReceipthead> headSpinAdapter;
     TblMstPgPaymentReceipthead headModelSelected;
-    String selectedPaymentMode,selectedPaymentUnit;
+    String selectedPaymentMode,selectedPaymentUnit,qty="0.0";
     PgPaymentAdapter aAdapter;
     List<PgPaymentTranstbl> pgPaymentTranstblList;
     private PgPaymentTranstbl pgPaymentSelectedItem;
@@ -95,6 +97,8 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pgpayment);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         ButterKnife.bind(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         init();
@@ -208,6 +212,7 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
         etEnterAmount.setText("");
         etEnterRemark.setText("");
         quantity.setText("");
+        quantity.setHint("मात्रा");
         spinner3.setSelection(0);
         spinner_unit.setSelection(0);
     }
@@ -219,7 +224,12 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
         textView71.setHint("");
         etEnterAmount.setText(item.getAmount());
         etEnterRemark.setText(item.getRemark());
-        quantity.setText(item.getQty());
+        qty=item.getQty();
+        if(item.getQty().equals("")) {
+            quantity.setText(qty);
+        }else {
+            quantity.setText(item.getQty());
+        }
         new SetSpinnerText(spinner3, item.getPaymentmode());
         if(item.getPaymentunit().equals("Kilo")){
             spinner_unit.setSelection(1);
@@ -229,6 +239,8 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
         }
         else if(item.getPaymentunit().equals("Number")){
             spinner_unit.setSelection(3);
+        }else {
+            spinner_unit.setSelection(0);
         }
         AppConstant.editpgpaymentrecord = true;
         pgPaymentSelectedItem = item;
@@ -297,7 +309,6 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
                 }
                 headModelSelected = (TblMstPgPaymentReceipthead) parent.getSelectedItem();
                 break;
-
             case R.id.spinner3:
                 if (position == 0) {
                     ((TextView) view).setTextColor(ContextCompat.getColor(this, R.color.colorGrayHint));
@@ -309,12 +320,11 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
                     selectedPaymentMode="Bank";
                 }
                 break;
-
         case R.id.spinner_units:
         if (position == 0) {
             ((TextView) view).setTextColor(ContextCompat.getColor(this, R.color.colorGrayHint));
-        }
-        selectedPaymentUnit =  parent.getSelectedItem().toString();
+           }
+          selectedPaymentUnit =  parent.getSelectedItem().toString();
             if(selectedPaymentUnit.equals("किलो")){
                 selectedPaymentUnit="Kilo";
             } else if(selectedPaymentUnit.equals("ग्राम")){
@@ -325,12 +335,10 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
         break;
     }
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
     @OnClick({R.id.imageView16, R.id.button4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -345,19 +353,27 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
                     String date = textView71.getText().toString();
                     String amount = etEnterAmount.getText().toString();
                     String remark = etEnterRemark.getText().toString();
+                    String BMID = headModelSelected.getBMID();
                     String pgCode = PgActivity.pgCodeSelected;
                     String[] userDetails = presenter.getUserDetails();
                     String username = userDetails[0];
                     String userid = userDetails[1];
                     String isexported = "0";
-                    String qty=quantity.getText().toString();
+                    if(!quantity.getText().toString().equals("")){
+                        qty=quantity.getText().toString();
+                    }else {
+                        qty="0.0";
+                    }
+                    if(selectedPaymentUnit.equals("इकाई को चुने")){
+                        selectedPaymentUnit="Select unit";
+                    }
                     if (AppConstant.editpgpaymentrecord) {
                         presenter.saveEditedData(budget_code, head_name, date, amount, remark, pgCode,
-                                username, userid, isexported,selectedPaymentMode,qty,selectedPaymentUnit,
+                                username, userid, isexported,selectedPaymentMode,qty,selectedPaymentUnit,BMID,
                                 pgPaymentSelectedItem);
                     } else {
                         presenter.saveData(budget_code, head_name, date, amount, remark, pgCode,
-                                username, userid, isexported,selectedPaymentMode,qty,selectedPaymentUnit);
+                                username, userid, isexported,selectedPaymentMode,qty,selectedPaymentUnit,BMID);
                     }
                 }
                 break;
@@ -370,26 +386,16 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
             presenter.blankHead();
         } else if (textView71.getHint().toString().equals("भुगतान की तिथि")) {
             presenter.blankDate();
-        } else if (etEnterAmount.getText().toString().equals("") || etEnterAmount.getText().toString().equals("0")) {
+        } else if (etEnterAmount.getText().toString().equals("")) {
+            presenter.blankamount();
+        } else if (etEnterAmount.getText().toString().equals("0")) {
             presenter.blankamount();
         } else if (selectedPaymentMode.equals("भुगतान का माध्यम")) {
             presenter.blankPaymentMode();
-        } else if (quantity.getText().toString().equals("") || quantity.getText().toString().equals("0")) {
-            presenter.blankquantity();
-        } else if (selectedPaymentUnit.equals("इकाई को चुने")) {
-           new StyleableToast
-                    .Builder(this)
-                    .text("इकाई को चुने")
-                    .iconStart(R.drawable.wrong_icon_white)
-                    .textColor(Color.WHITE)
-                    .backgroundColor(getResources().getColor(R.color.colorPrimary))
-                    .show();
-                     result = false;
         }
         else {
             result = true;
         }
-
         return result;
     }
 
@@ -404,9 +410,9 @@ public class PgpaymentActivity extends AppCompatActivity implements PgPaymentVie
         if (dayOfMonth < 10) {
             newDay = "0" + dayOfMonth;
         }
-        String newDate = newMonth + "/" + newDay + "/" + year;
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-        String currentDate = new SimpleDateFormat("d/M/yyyy", Locale.getDefault()).format(new Date());
+        String newDate = year + "/" + newMonth + "/" + newDay;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         Date date1 = null, date2 = null;
         try {
             date1 = sdf.parse(date);

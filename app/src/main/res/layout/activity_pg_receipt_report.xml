@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parentContainer"
-    >
+    android:id="@+id/parentContainer">
 
     <ImageView
         android:id="@+id/imageView"
@@ -35,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/payment_receipt_report"
+        android:text="प्राप्ति भुगतान रिपोर्ट"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -65,7 +64,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23">
-
 
         <TextView
             android:id="@+id/textView81"
@@ -129,10 +127,9 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView19"
             app:srcCompat="@drawable/date_icon" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -144,9 +141,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button5">
 
-
-
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -167,7 +162,7 @@
 <!--                        app:layout_constraintStart_toStartOf="parent"-->
 <!--                        app:layout_constraintTop_toBottomOf="parent">-->
 
-                    <LinearLayout
+                      <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:orientation="horizontal"
@@ -227,16 +222,11 @@
 
                     </View>
 
-
 <!--                    </HorizontalScrollView>-->
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-        </android.support.constraint.ConstraintLayout>
-
-
-      <android.support.constraint.ConstraintLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout499"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -245,7 +235,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -261,10 +250,12 @@
                     android:layout_height="match_parent"
                     android:padding="0dp"
                     android:text="" />
+
                 <View
                     android:layout_width="1sp"
                     android:background="@color/black"
                     android:layout_height="match_parent"/>
+
                 <TextView
                     style="@style/tableStyleRight"
                     android:textStyle="bold"
@@ -275,26 +266,31 @@
                     android:layout_width="1sp"
                     android:background="@color/black"
                     android:layout_height="match_parent"/>
+
                 <TextView
                     android:textStyle="bold"
                     android:id="@+id/totalReceivedAmt"
                     style="@style/tableStyleRight"
                     android:layout_height="match_parent"
                     android:text="" />
+
                 <View
                     android:layout_width="1sp"
                     android:background="@color/black"
                     android:layout_height="match_parent"/>
+
                 <TextView
                     android:textStyle="bold"
                     android:id="@+id/totalPaymentAmt"
                     style="@style/tableStyleRight"
                     android:layout_height="match_parent"
                     android:text="" />
+
                 <View
                     android:layout_width="1sp"
                     android:background="@color/black"
                     android:layout_height="match_parent"/>
+
                 <TextView
                     style="@style/tableStyleRight"
                     android:layout_height="match_parent"
@@ -312,13 +308,9 @@
 
             </View>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        </android.support.constraint.ConstraintLayout>
-
-
-
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyler_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -330,7 +322,7 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
             app:layout_constraintVertical_bias="0.0" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/button5"
@@ -352,8 +344,8 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        android:tint="@color/colorWhite"
-        app:srcCompat="@drawable/reset_date" />
+        app:srcCompat="@drawable/reset_date"
+        app:tint="@color/colorWhite" />
 
     <ImageView
         android:id="@+id/imageView22"
@@ -365,4 +357,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_pdf" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

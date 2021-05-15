@@ -1,4 +1,4 @@
-package wholesalefactory.co.model;
+package com.jslps.pgmisnew.util;
 
 import android.content.Context;
 

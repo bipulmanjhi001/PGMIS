@@ -2,7 +2,7 @@ package com.jslps.pgmisnew.database;
 
 import com.orm.SugarRecord;
 
-public class PgMemShipFeeSavetbl extends SugarRecord {
+public class Pgmemshipfeesavetbl extends SugarRecord {
 
     private String Pgcode;
     private String Grpmemcode;
@@ -11,25 +11,25 @@ public class PgMemShipFeeSavetbl extends SugarRecord {
     private String amount;
     private String Isexported;
     private String Uid;
-    private String createddate;
+    private String CreatedDate;
     private String paymentdate;
     private String paymentmode;
 
-    public PgMemShipFeeSavetbl(){
+    public Pgmemshipfeesavetbl(){
 
     }
 
-    public PgMemShipFeeSavetbl(String pgcode, String grpmemcode, String grpcode, String membername, String amount, String isexported, String uid, String created_date, String payment_date, String payment_mode) {
-        this.Pgcode = pgcode;
-        this.Grpmemcode = grpmemcode;
-        this.Grpcode = grpcode;
-        this.Membername = membername;
+    public Pgmemshipfeesavetbl(String pgcode, String grpmemcode, String grpcode, String membername, String amount, String isexported, String uid, String createdDate, String paymentdate, String paymentmode) {
+        Pgcode = pgcode;
+        Grpmemcode = grpmemcode;
+        Grpcode = grpcode;
+        Membername = membername;
         this.amount = amount;
-        this.Isexported = isexported;
-        this.Uid = uid;
-        this.createddate = created_date;
-        this.paymentdate = payment_date;
-        this.paymentmode = payment_mode;
+        Isexported = isexported;
+        Uid = uid;
+        CreatedDate = createdDate;
+        this.paymentdate = paymentdate;
+        this.paymentmode = paymentmode;
     }
 
     public String getPgcode() {
@@ -37,7 +37,7 @@ public class PgMemShipFeeSavetbl extends SugarRecord {
     }
 
     public void setPgcode(String pgcode) {
-        Pgcode = pgcode;
+        pgcode = pgcode;
     }
 
     public String getGrpmemcode() {
@@ -88,19 +88,19 @@ public class PgMemShipFeeSavetbl extends SugarRecord {
         Uid = uid;
     }
 
-    public String getCreateddate() {
-        return createddate;
+    public String getCreatedDate() {
+        return CreatedDate;
     }
 
-    public void setCreated_date(String created_date) {
-        this.createddate = createddate;
+    public void setCreatedDate(String createdDate) {
+        CreatedDate = createdDate;
     }
 
     public String getPaymentdate() {
         return paymentdate;
     }
 
-    public void setPayment_date(String payment_date) {
+    public void setPaymentdate(String paymentdate) {
         this.paymentdate = paymentdate;
     }
 
@@ -108,7 +108,7 @@ public class PgMemShipFeeSavetbl extends SugarRecord {
         return paymentmode;
     }
 
-    public void setPaymentmode(String payment_mode) {
+    public void setPaymentmode(String paymentmode) {
         this.paymentmode = paymentmode;
     }
 }

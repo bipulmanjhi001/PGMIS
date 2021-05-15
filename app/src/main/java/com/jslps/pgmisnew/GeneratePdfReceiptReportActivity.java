@@ -6,20 +6,25 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.LruCache;
+import android.view.Display;
 import android.view.View;
 
 import com.itextpdf.text.Document;
@@ -27,8 +32,8 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.jslps.pgmisnew.adapter.PdfBrsReportAdapter;
 import com.jslps.pgmisnew.adapter.PdfReceiveReportAdapter;
-import com.jslps.pgmisnew.adapter.PdfReportAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,11 +59,11 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generate_pdf_receipt_report);
+        setContentView(R.layout.activity_generate_pdf_brs_report);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         ButterKnife.bind(this);
-
         init();
-
     }
 
     private void init() {
@@ -72,7 +77,7 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
         from = intent.getStringExtra("from");
         to = intent.getStringExtra("to");
 
-        aAdapter = new PdfReceiveReportAdapter(this, PgPaymentReceiptReportActivity.pdfGenerateDataList);
+        aAdapter = new PdfReceiveReportAdapter(this,PgPaymentReceiptReportActivity.pdfGenerateDataList);
         LinearLayoutManager verticalLayoutmanager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(verticalLayoutmanager);
@@ -111,7 +116,7 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
 
             // Use 1/8th of the available memory for this memory cache.
             final int cacheSize = maxMemory / 8;
-            LruCache<String, Bitmap> bitmaCache = new LruCache<>(cacheSize);
+            LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
             for (int i = 0; i < size; i++) {
                 RecyclerView.ViewHolder holder = adapter.createViewHolder(view, adapter.getItemViewType(i));
                 adapter.onBindViewHolder(holder, i);
@@ -123,18 +128,21 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
                 Bitmap drawingCache = holder.itemView.getDrawingCache();
                 if (drawingCache != null) {
 
-                    bitmaCache.put(String.valueOf(i), drawingCache);
+                    bitmapCache.put(String.valueOf(i), drawingCache);
                 }
 
                 height += holder.itemView.getMeasuredHeight();
             }
 
-            bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888);
+            bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+//            bigBitmap = Bitmap.createBitmap(getScreenWidth() , getScreenHeight(), Bitmap.Config.ARGB_8888);
+
+
             Canvas bigCanvas = new Canvas(bigBitmap);
             bigCanvas.drawColor(Color.WHITE);
 
             Document document = new Document(PageSize.A4,0,0,0,0);
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/PGMISPaymentReceiptPDF";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/PGMISReportPDF";
 
             File dir = new File(path);
             if(!dir.exists())
@@ -159,7 +167,7 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
 
                 try {
                     //Adding the content to the document
-                    Bitmap bmp = bitmaCache.get(String.valueOf(i));
+                    Bitmap bmp = bitmapCache.get(String.valueOf(i));
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     Image image = Image.getInstance(stream.toByteArray());
@@ -167,7 +175,6 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
                             - document.rightMargin() - 0) / image.getWidth()) * 100; // 0 means you have no indentation. If you have any, change it.
                     image.scalePercent(scaler);
                     image.setAlignment(Image.ALIGN_CENTER | Image.ALIGN_TOP);
-
 
                     if (!document.isOpen()) {
                         document.open();
@@ -212,4 +219,26 @@ public class GeneratePdfReceiptReportActivity extends AppCompatActivity {
             });
         }
     }
+
+
+    public int getScreenWidth() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+//        return Resources.getSystem().getDisplayMetrics().widthPixels;
+        return  width;
+    }
+
+
+    public int getScreenHeight() {
+//        return Resources.getSystem().getDisplayMetrics().heightPixels;
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+       int height = size.y;
+        return  height;
+    }
+
+
 }
