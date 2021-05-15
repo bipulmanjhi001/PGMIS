@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MemberDetailsActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/header_bg" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:srcCompat="@drawable/header_img" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="PG के लिए बैंक समाधान विवरण का प्रारूप"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:text=""
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView123"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="As on"
+        android:textColor="@color/colorWhite"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:editable="false"
+        android:focusable="false"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/textView23"
+        android:tint="@color/colorWhite"
+        app:srcCompat="@drawable/date_icon" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/item_border_view_meetings"
+                android:elevation="3dp">
+
+                <TextView
+                    android:id="@+id/textView124"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView128"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView125" />
+
+                <TextView
+                    android:id="@+id/textView130"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView129" />
+
+                <TextView
+                    android:id="@+id/textView132"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView131" />
+
+                <TextView
+                    android:id="@+id/textView125"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView124" />
+
+                <TextView
+                    android:id="@+id/textView129"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView128" />
+
+                <TextView
+                    android:id="@+id/textView131"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView130" />
+
+                <TextView
+                    android:id="@+id/textView126"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Particular"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView124"
+                    app:layout_constraintEnd_toStartOf="@+id/textView124"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView127"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Amount ₹"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView124"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView124"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView133"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:text=" A. कैश बुक (रजिस्टर) के अनुसार बैंक शेष राशि "
+                    app:layout_constraintBottom_toBottomOf="@+id/textView128"
+                    app:layout_constraintEnd_toStartOf="@+id/textView128"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView124" />
+
+                <TextView
+                    android:id="@+id/textView134"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:text=" B. बैंक पास बुक के अनुसार शेष राशि"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView130"
+                    app:layout_constraintEnd_toStartOf="@+id/textView130"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView128" />
+
+                <TextView
+                    android:id="@+id/textView135"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:text=" C. अंतर (A-B)"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView132"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView130" />
+
+                <EditText
+
+                    android:id="@+id/editText2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView130"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView130"
+                    app:layout_constraintTop_toBottomOf="@+id/textView128" />
+
+                <TextView
+                    android:id="@+id/textView180"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView128"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView128"
+                    app:layout_constraintTop_toBottomOf="@+id/textView127" />
+
+                <TextView
+                    android:id="@+id/textView181"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView132"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView132"
+                    app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+                <ImageView
+                    android:id="@+id/imageView26"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView135"
+                    app:layout_constraintEnd_toStartOf="@+id/textView132"
+                    app:layout_constraintTop_toBottomOf="@+id/textView134"
+                    app:srcCompat="@drawable/subtract_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" जोड़ें (Add): "
+                android:layout_gravity="center"
+                android:textStyle="bold"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/item_border_view_meetings"
+                android:elevation="3dp">
+
+                <TextView
+                    android:id="@+id/textView1244"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/textView138"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView1244" />
+
+                <TextView
+                    android:id="@+id/textView140"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView138" />
+
+                <TextView
+                    android:id="@+id/textView142"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView140" />
+
+                <TextView
+                    android:id="@+id/textView144"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView142" />
+
+                <TextView
+                    android:id="@+id/textView146"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView144" />
+
+                <TextView
+                    android:id="@+id/textView148"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView146" />
+
+                <TextView
+                    android:id="@+id/textView136"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView148" />
+
+                <TextView
+                    android:id="@+id/textView1255"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView1244" />
+
+                <TextView
+                    android:id="@+id/textView139"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView138" />
+
+                <TextView
+                    android:id="@+id/textView141"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView140" />
+
+                <TextView
+                    android:id="@+id/textView143"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView142" />
+
+                <TextView
+                    android:id="@+id/textView145"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView144" />
+
+                <TextView
+                    android:id="@+id/textView147"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView146" />
+
+                <TextView
+                    android:id="@+id/textView157"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView148" />
+
+                <TextView
+                    android:id="@+id/textView149"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Particular"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView1244"
+                    app:layout_constraintEnd_toStartOf="@+id/textView1244"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView150"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Amount"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView1244"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView1244"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:tag="1"
+                    android:id="@+id/textView151"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.1 वेंडर या अन्य पार्टियों को जारी किए गए चेक भुगतान के लिए बैंक में प्रस्तुत नही किया गया ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView138"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView149" />
+
+                <TextView
+                    android:tag="2"
+                    android:id="@+id/textView153"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.2 सदस्य द्वारा सीधे बैंक खाते में जमा किए गए ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView140"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView151" />
+
+                <TextView
+                    android:tag="3"
+                    android:id="@+id/textView154"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.3  ब्याज बैंक द्वारा क्रेडिट किया जाता है लेकिन कैश बुक में दर्ज नही किया गया ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView142"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView153" />
+
+                <TextView
+                    android:tag="4"
+                    android:id="@+id/textView155"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.4 कैश बुक में PG द्वारा बनाई गई गलत प्रविष्टियाँ (भुगतान के तरफ) ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView144"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView154" />
+
+                <TextView
+                    android:tag="5"
+                    android:id="@+id/textView156"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.5 बैंक द्वारा पास बुक में की गई गलत प्रविष्टियाँ (प्राप्ति के तरफ) ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView146"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView155" />
+
+                <TextView
+                    android:tag="6"
+                    android:id="@+id/textView137"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="D.6 वेंडर या अन्य पार्टियों को जारी किए गए चेक का भुगतान बैंक के द्वारा चेक मे त्रुटि के कारण नही किया गया ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView148"
+                    app:layout_constraintEnd_toStartOf="@+id/textView138"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView156" />
+
+                <TextView
+                    android:id="@+id/textView152"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Total Amount ₹ (D)"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView136"
+                    app:layout_constraintEnd_toStartOf="@+id/textView136"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView137" />
+
+                <EditText
+                    android:id="@+id/editText3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView138"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/textView150" />
+
+                <EditText
+                    android:id="@+id/editText4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView140"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+                <EditText
+                    android:id="@+id/editText5"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView142"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/editText4" />
+
+                <EditText
+                    android:id="@+id/editText6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView144"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+                <EditText
+                    android:id="@+id/editText7"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView146"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/editText6" />
+
+                <EditText
+                    android:id="@+id/editText8"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView148"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView138"
+                    app:layout_constraintTop_toBottomOf="@+id/editText7" />
+
+                <TextView
+                    android:id="@+id/textView182"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView136"
+                    app:layout_constraintTop_toBottomOf="@+id/editText8" />
+
+                <ImageView
+                    android:id="@+id/imageView27"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView152"
+                    app:layout_constraintEnd_toStartOf="@+id/textView136"
+                    app:layout_constraintTop_toBottomOf="@+id/textView137"
+                    app:srcCompat="@drawable/add_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" घटाव  (Less): "
+                android:layout_gravity="center"
+                android:textStyle="bold"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/item_border_view_meetings"
+                android:elevation="3dp">
+
+                <TextView
+                    android:id="@+id/textView12444"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView158"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12444" />
+
+                <TextView
+                    android:id="@+id/textView160"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView158" />
+
+                <TextView
+                    android:id="@+id/textView162"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView160" />
+
+                <TextView
+                    android:id="@+id/textView165"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView162" />
+
+                <TextView
+                    android:id="@+id/textView168"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView165" />
+
+                <TextView
+                    android:id="@+id/textView170"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorBlack"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView168" />
+
+                <TextView
+                    android:id="@+id/textView12555"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12444" />
+
+                <TextView
+                    android:id="@+id/textView159"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView158" />
+
+                <TextView
+                    android:id="@+id/textView161"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView160" />
+
+                <TextView
+                    android:id="@+id/textView163"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView162" />
+
+                <TextView
+                    android:id="@+id/textView167"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView165" />
+
+                <TextView
+                    android:id="@+id/textView169"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView168" />
+
+                <TextView
+                    android:id="@+id/textView171"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Particular"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView12444"
+                    app:layout_constraintEnd_toStartOf="@+id/textView12444"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView172"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Amount"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView12444"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView12444"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:tag="7"
+                    android:id="@+id/textView173"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="E.1 सदस्य से प्राप्त चेक और बैंक में जमा किया गया लेकिन बैंकर द्वारा एकत्र नही किए गए ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView158"
+                    app:layout_constraintEnd_toStartOf="@+id/textView158"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView171" />
+
+                <TextView
+                    android:tag="8"
+                    android:id="@+id/textView175"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="E.2 बैंक चार्ज/शुल्क, बैंक के द्वारा काट लिया गया लेकिन कैश बुक में दर्ज नहीं किया गया ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView160"
+                    app:layout_constraintEnd_toStartOf="@+id/textView158"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView173" />
+
+                <TextView
+                    android:tag="9"
+                    android:id="@+id/textView176"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="E.3 कैश बुक में PG के द्वारा गलत प्रविष्टियाँ ( प्राप्ति के तरफ) ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView162"
+                    app:layout_constraintEnd_toStartOf="@+id/textView158"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView175" />
+
+                <TextView
+                    android:tag="10"
+                    android:id="@+id/textView177"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="E.4 बैंक द्वारा पास बुक में गलत प्रविष्टियाँ (भुगतान के तरफ) ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView165"
+                    app:layout_constraintEnd_toStartOf="@+id/textView158"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView176" />
+
+                <TextView
+                    android:tag="11"
+                    android:id="@+id/textView178"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:paddingBottom="10sp"
+                    android:layout_marginEnd="2dp"
+                    android:gravity="center_vertical"
+                    android:text="E.5 सदस्य से प्राप्त चेक और बैंक में जमा किया गया लेकिन बैंकर द्वारा चेक मे त्रुटि के कारण एकत्र नही किए गए ।"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView168"
+                    app:layout_constraintEnd_toStartOf="@+id/textView158"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView177" />
+
+                <TextView
+                    android:id="@+id/textView174"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/textView172" />
+
+                <TextView
+                    android:id="@+id/textView179"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="Total Amount ₹ (E)"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView170"
+                    app:layout_constraintEnd_toStartOf="@+id/textView170"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView178" />
+
+                <EditText
+                    android:id="@+id/editText9"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView158"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/textView172" />
+
+                <EditText
+                    android:id="@+id/editText10"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView160"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/editText9" />
+
+                <EditText
+                    android:id="@+id/editText11"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView162"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/editText10" />
+
+                <EditText
+                    android:id="@+id/editText12"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView165"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/editText11" />
+
+                <EditText
+                    android:id="@+id/editText13"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView168"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView158"
+                    app:layout_constraintTop_toBottomOf="@+id/editText12" />
+
+                <ImageView
+                    android:id="@+id/imageView28"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView170"
+                    app:layout_constraintTop_toBottomOf="@+id/textView178"
+                    app:srcCompat="@drawable/add_icon" />
+
+                <TextView
+                    android:id="@+id/textView183"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView170"
+                    app:layout_constraintTop_toBottomOf="@+id/editText13" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/bank_statement"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="6sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="बैंक समाधान विवरण "
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/actual_difference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="वास्तविक अंतर (शून्य होना चाहिए) [C+D-E] "
+                android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/calc"
+                    android:layout_width="80sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/select_button"
+                    android:text="Calc"
+                    android:layout_marginLeft="6sp"
+                    android:layout_height="34sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Attachment of File:  "
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView24"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView164"
+                    app:layout_constraintStart_toEndOf="@+id/textView164"
+                    app:layout_constraintTop_toTopOf="@+id/textView164"
+                    app:srcCompat="@drawable/no_image_available" />
+
+                <ImageView
+                    android:id="@+id/imageView25"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView166"
+                    app:layout_constraintStart_toEndOf="@+id/textView166"
+                    app:layout_constraintTop_toTopOf="@+id/textView166"
+                    app:srcCompat="@drawable/no_image_available" />
+
+                <TextView
+                    android:id="@+id/textView164"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:text="Pass Book Last Page"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView166"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="50dp"
+                    android:text="Cash Book Last Page"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Save  "
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:padding="20dp"
+                android:background="@color/green"
+                android:textColor="@color/colorWhite"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

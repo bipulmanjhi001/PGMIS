@@ -123,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Volle
         presenter.sharedUser();
         presenter.passwordIcon();
         presenter.setFont();
+
         // Initialize the Prefs class
         new Prefs.Builder()
                 .setContext(this)

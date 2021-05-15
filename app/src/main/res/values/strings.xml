@@ -1,0 +1,222 @@
+<resources>
+
+    <string name="app_name">PGMIS</string>
+    <string name="login">लॉगिन करे</string>
+    <string name="username_blank">यूजरनाम डाले</string>
+    <string name="password_blank">पासवर्ड डाले</string>
+    <string name="username_wrong">यूजरनाम या पासवर्ड गलत है</string>
+    <string name="refresh">नया डाटा डाउनलोड करे (रिफ्रेश करे)?</string>
+    <string name="remember">यूजरनाम एंड पासवर्ड याद रखे</string>
+    <string name="user_name">उपयोगकर्ता नाम</string>
+    <string name="user_password">पासवर्ड</string>
+    <string name="loading">डाटा लोड हो रहा है कृप्या रुकिए....</string>
+    <string name="try_again">पुन: प्रयास करे</string>
+    <string name="no_user_name">यूजरनाम नहीं है</string>
+    <string name="no_password">पासवर्ड नहीं है</string>
+    <string name="internet_error">इंटरनेट त्रुटि</string>
+    <string name="internet_msg">इंटरनेट नहीं है ,इंटरनेट चेक करे</string>
+    <string name="close">बंद करे</string>
+    <string name="correct_username">सही यूजरनाम , पासवर्ड डाले</string>
+    <string name="success">सफलता</string>
+    <string name="success_msg">डाटा सफलतापूर्वक डाउनलोड हुआ</string>
+    <string name="update_msg">डाटा सफलतापूर्वक अपडेट हुआ</string>
+    <string name="producer_activity_titile">प्रोडूसर ग्रुप लिस्ट</string>
+    <string name="search">खोज करें</string>
+    <string name="list_count">सूची की कुल संख्या:</string>
+    <string name="producer_group_member_title">प्रोडूसर ग्रुप मेंबर्स लिस्ट</string>
+    <string name="shg">एस एच जी:</string>
+    <string name="dashboard">डैशबोर्ड</string>
+    <string name="pleaseWait">कृपया प्रतीक्षा करें</string>
+    <string name="new_update">नया अपडेट</string>
+    <string name="new_message">कृपया अपडेट करें</string>
+    <string name="pg_mis">PG MIS</string>
+    <string name="updateApp">अपडेट</string>
+    <string name="server_error">Server Error</string>
+    <string name="wronguser">Wrong Username or Password</string>
+    <string name="select_pg">पीजी का चयन करें</string>
+    <string name="members_details">सदस्यों का विवरण</string>
+    <string name="farmer">किसान</string>
+    <string name="father_husband_name_shg">एस एच जी के अनुसार पिता / पति</string>
+    <string name="value">value</string>
+    <string name="colon">:</string>
+    <string name="shg_name">एस एच जी</string>
+    <string name="father_name">पिता का नाम</string>
+    <string name="husband_name">पति का नाम</string>
+    <string name="member_name">सदस्य का नाम</string>
+    <string name="designation">पद</string>
+    <string name="primary_activity">प्राइमरी एक्टिविटी</string>
+    <string name="Fishery">फिशरी</string>
+    <string name="hva">एच भी ए</string>
+    <string name="livestock">लाइवस्टॉक</string>
+    <string name="ntfp">एन टी एफ पी</string>
+    <string name="membership_fee">सदस्यता शुल्क</string>
+    <string name="share_capital">शेयर पूंजी</string>
+    <string name="livestock_broiler">लाइवस्टॉक ब्रायलर</string>
+    <string name="livestock_goat">लाइवस्टॉक गोट</string>
+    <string name="livestock_layer">लाइवस्टॉक लेयर</string>
+    <string name="livestock_pig">लाइवस्टॉक पिग</string>
+    <string name="livestock_byp">लाइवस्टॉक बी व्हाई पि</string>
+    <string name="president">President</string>
+    <string name="Secretary">Secretary</string>
+    <string name="Treasurer">Treasurer</string>
+    <string name="Member">Member</string>
+    <string name="add_members">सदस्य जोड़ें</string>
+    <string name="select_shgg">कृपया एस एच जी चुनें</string>
+    <string name="save">सुरक्षित करे</string>
+    <string name="error">ग़लती</string>
+    <string name="select_primary_activity">कृपया प्राथमिक गतिविधि चुनें</string>
+    <string name="select_designation">कृपया पदनाम का चयन करें</string>
+    <string name="saved">डेटा सफलतापूर्वक सहेजा गया</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="select_gender">लिंग का चयन करें</string>
+    <string name="male">पुरुष</string>
+    <string name="female">महिला</string>
+    <string name="cast">जाति का चयन करें</string>
+    <string name="enter_mebership_fee">सदस्यता शुल्क दर्ज करें</string>
+    <string name="cant_be_greater">दर्ज राशि शेष राशि से अधिक नहीं हो सकती</string>
+    <string name="at_least_one_amount">कृपया कम से कम एक राशि दर्ज करें</string>
+    <string name="meeting_details">बैठक का विवरण</string>
+    <string name="meeting_date">बैठक की तारीख दर्ज करें</string>
+    <string name="total_no_people">उपस्थित लोगों की कुल संख्या दर्ज करें</string>
+    <string name="meeting_date_list">बैठक की तारीख</string>
+    <string name="no_of_people">उपस्थित लोगों की संख्या</string>
+    <string name="no_of_cadre">उपस्थित कैडर का चयन करें</string>
+    <string name="no_of_cadre_list">उपस्थित कैडर</string>
+    <string name="date_cant_be_empty">दिनांक और सदस्यों की संख्या रिक्त नहीं हो सकती</string>
+    <string name="meeting_saved_successfully">मीटिंग, सफलतापूर्वक सहेजा गया</string>
+    <string name="delete_sure">क्या आप पक्का इसे हटाना चाहते हैं</string>
+    <string name="select_headd">Please Select Head</string>
+    <string name="blank_date">Date Can\'t be Blank</string>
+    <string name="atleast_one_date">Please Select atleast one date</string>
+    <string name="pg_payment">उत्पादक समूह द्वारा भुगतान</string>
+    <string name="pg_receipt">उत्पादक समूह को प्राप्ति</string>
+    <string name="payment_receipt_report">अनुदान उपयोग रिपोर्ट</string>
+    <string name="payment_receipt_report2">प्राप्ति भुगतान रिपोर्ट</string>
+    <string name="pay_date">भुगतान की तिथि</string>
+    <string name="amount">भुगतान की राशी</string>
+    <string name="remark">विवरण</string>
+    <string name="quantity">मात्रा</string>
+    <string name="stock_report">स्टॉक रिपोर्ट</string>
+
+    <string name="akm">पशु सखी</string>
+    <string name="aps">कृषक मित्र</string>
+    <string name="amm">मत्स्य मित्र</string>
+    <string name="aw">सक्रिय महिला</string>
+    <string name="rate">दर</string>
+    <string name="selects">इकाई को चुने</string>
+
+    <string-array name="pg_list">
+        <item>abc</item>
+        <item>123</item>
+    </string-array>
+
+    <string-array name="select_shg">
+        <item>कृपया एस एच जी चुनेंं</item>
+    </string-array>
+
+    <string-array name="select_primary_activity">
+        <item>Select Primary Activity</item>
+    </string-array>
+
+    <string-array name="select_designation">
+        <item>Select Designation</item>
+    </string-array>
+
+    <string-array name="select_head">
+        <item>मद का नाम चुने</item>
+    </string-array>
+
+    <string-array name="select_member">
+        <item>Select Member Name</item>
+    </string-array>
+
+    <string-array name="select_payment_mode_loan">
+        <item><font fgcolor='#FF8E8E93'>Select Payment mode</font></item>
+        <item>Loan</item>
+        <item>Cash</item>
+        <item>Bank</item>
+    </string-array>
+
+    <string-array name="select_stock_item">
+        <item>आइटम का नाम चुनें</item>
+    </string-array>
+
+    <string-array name="select_unit">
+        <item><font fgcolor='#FF8E8E93'>इकाई को चुने</font></item>
+        <item>किलो</item>
+        <item>ग्राम</item>
+        <item>संख्या</item>
+    </string-array>
+
+    <string-array name="select_cheque_type">
+        <item><font fgcolor='#FF8E8E93'>चेक का माध्यम</font></item>
+        <!-- <item>नकद</item>-->
+        <item>बैंक</item>
+    </string-array>
+
+    <string-array name="select_purchaseunit">
+        <item><font fgcolor='#FF8E8E93'>इकाई को चुने</font></item>
+        <item>किलो</item>
+        <item>ग्राम</item>
+        <item>संख्या</item>
+    </string-array>
+
+    <string-array name="select_payment_mode">
+        <item><font fgcolor='#FF8E8E93'>भुगतान  का माध्यम</font></item>
+        <item>भण्डार</item>
+        <!-- <item>नकद</item>
+        <item>बैंक</item>-->
+    </string-array>
+
+    <string-array name="select_payment_mode2">
+        <item><font fgcolor='#FF8E8E93'>प्राप्ति का माध्यम</font></item>
+        <item>नकद</item>
+        <item>बैंक</item>
+    </string-array>
+
+    <string-array name="select_bank_head">
+        <item><font fgcolor='#FF8E8E93'>विकल्प चुनें</font></item>
+        <item>बैंक से नगद निकासी</item>
+        <item>बैंक में नगद जमा</item>
+    </string-array>
+
+    <string-array name="select_gender">
+        <item>Select gender</item>
+    </string-array>
+
+    <string-array name="select_cast">
+        <item>Select cast</item>
+    </string-array>
+
+    <string-array name="unit">
+        <item><font fgcolor='#FF8E8E93'>इकाई को चुने</font></item>
+        <item>किलो</item>
+        <item>ग्राम</item>
+        <item>संख्या</item>
+    </string-array>
+
+    <string name="title_activity_cheque_loan">ChequeLoanActivity</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="phinput" />
+    <string name="phoutput" />
+
+    <string-array name="phinput">
+        <item><font fgcolor='#FF8E8E93'>विकल्प चुनें</font></item>
+        <item>FPC</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="phoutput">
+        <item><font fgcolor='#FF8E8E93'>विकल्प चुनें</font></item>
+        <item>FPC</item>
+        <item>Others</item>
+    </string-array>
+
+</resources>
