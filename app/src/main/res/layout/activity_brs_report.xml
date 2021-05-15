@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parentContainer"
+    >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/header_bg" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:srcCompat="@drawable/header_img" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="BRS Uploaded Report"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/item_border_view_pg_activity"
+        android:paddingBottom="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23">
+
+
+        <TextView
+            android:id="@+id/textView81"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="From:"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView19" />
+
+        <TextView
+            android:id="@+id/textView82"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Select Date"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+            app:layout_constraintEnd_toStartOf="@+id/imageView19"
+            app:layout_constraintStart_toEndOf="@+id/textView81"
+            app:layout_constraintTop_toTopOf="@+id/imageView19" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/date_icon" />
+
+        <TextView
+            android:id="@+id/textView83"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="To    :"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView20" />
+
+        <TextView
+            android:id="@+id/textView84"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Select Date"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView20"
+            app:layout_constraintEnd_toStartOf="@+id/imageView20"
+            app:layout_constraintStart_toEndOf="@+id/textView83"
+            app:layout_constraintTop_toTopOf="@+id/imageView20" />
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView19"
+            app:srcCompat="@drawable/date_icon" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/item_border_view_meetings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button5">
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGray"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+<!--                    <HorizontalScrollView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:layout_marginBottom="8dp"-->
+<!--                        android:fillViewport="true"-->
+<!--                        android:scrollbars="none"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="parent">-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent">
+
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:padding="0dp"
+                            android:text="Year" />
+                        <View
+                            android:layout_width="1sp"
+                            android:background="@color/black"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:text="Month" />
+
+                        <View
+                            android:layout_width="1sp"
+                            android:background="@color/black"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:text="Cash Book Balance" />
+                        <View
+                            android:layout_width="1sp"
+                            android:background="@color/black"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:text="Passbook Balance" />
+                        <View
+                            android:layout_width="1sp"
+                            android:background="@color/black"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:text="Cashbook Img" />
+                        <View
+                            android:layout_width="1sp"
+                            android:background="@color/black"
+                            android:layout_height="match_parent"/>
+                        <TextView
+                            style="@style/tableStyleRight"
+                            android:layout_height="match_parent"
+                            android:text="Passbook Img" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent">>
+
+                    </View>
+
+
+<!--                    </HorizontalScrollView>-->
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+      <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout499"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGray"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent">
+
+                <TextView
+                    style="@style/tableStyleRight"
+                    android:layout_height="match_parent"
+                    android:padding="0dp"
+                    android:text="" />
+                <View
+                    android:layout_width="1sp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    style="@style/tableStyleRight"
+                    android:textStyle="bold"
+                    android:layout_height="match_parent"
+                    android:text="Total" />
+
+                <View
+                    android:layout_width="1sp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:textStyle="bold"
+                    android:id="@+id/totalReceivedAmt"
+                    style="@style/tableStyleRight"
+                    android:layout_height="match_parent"
+                    android:text="" />
+                <View
+                    android:layout_width="1sp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:textStyle="bold"
+                    android:id="@+id/totalPaymentAmt"
+                    style="@style/tableStyleRight"
+                    android:layout_height="match_parent"
+                    android:text="" />
+                <View
+                    android:layout_width="1sp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    style="@style/tableStyleRight"
+                    android:layout_height="match_parent"
+                    android:text="" />
+                <View
+                    android:layout_width="1sp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    style="@style/tableStyleRight"
+                    android:layout_height="match_parent"
+                    android:text="" />
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent">>
+
+            </View>
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyler_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout499"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Report"
+        android:backgroundTint="@color/colorAccent"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+    <ImageView
+        android:id="@+id/imageView21"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/colorWhite"
+        app:srcCompat="@drawable/reset_date" />
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_pdf" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/date"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:padding="0dp"
+                android:text="Date" />
+            <View
+                android:layout_width="1sp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/head"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:text="Month" />
+
+            <View
+                android:layout_width="1sp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/receivedAnt"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:text="Balance (Cashbook)" />
+            <View
+                android:layout_width="1sp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/paymentAmt"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:text="Balance (Passbook)" />
+            <View
+                android:layout_width="1sp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/cashBookImgBtn"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/ic_menu_view"
+                />
+            <View
+                android:layout_width="1sp"
+                android:background="@color/black"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/passbookImgBtn"
+                style="@style/tableStyleRight"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/ic_menu_view"/>
+        </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">>
+
+    </View>
+
+
+
+
+</android.support.constraint.ConstraintLayout>
